@@ -1,0 +1,6 @@
+title https://studies.cs.helsinki.fi/exampleapp/new_note/new_note_spa
+
+note over browser: the browser redraws the notes\nwith the new note and then\nthe browser sends a POST request \nwith a JSON file
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: HTTP Code 201
