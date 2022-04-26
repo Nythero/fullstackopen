@@ -1,0 +1,22 @@
+title https://studies.cs.helsinki.fi/exampleapp/new_note
+
+note over browser: browser submits form
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+
+note over server: server redirects to /exampleapp/notes
+server-->browser: HTTP Code 302
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js 
+server-->browser: main.js
+
+note over browser: browser executes main.js \nbrowser ask for data.json
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: data.json
