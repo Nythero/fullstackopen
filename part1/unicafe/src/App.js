@@ -6,7 +6,10 @@ const Button = (props) => (<button onClick={props.onClick}>
   {props.name}
 </button>)
 
-const StatisticLine = (props) => <p>{props.name} {props.quantity}</p>
+const StatisticLine = (props) => (<tr>
+  <th>{props.name}</th>
+  <td>{props.quantity}</td>
+</tr>)
 
 const Statistics = (props) => {
 
@@ -25,12 +28,16 @@ const Statistics = (props) => {
   else {
     return <>
       <Title title="statistics" />
-      <StatisticLine name="good" quantity={good} />
-      <StatisticLine name="neutral" quantity={neutral} />
-      <StatisticLine name="bad" quantity={bad} />
-      <StatisticLine name="total" quantity={total} />
-      <StatisticLine name="average" quantity={average} />
-      <StatisticLine name="positive" quantity={positive} />
+      <table>
+        <tbody>
+          <StatisticLine name="good" quantity={good} />
+          <StatisticLine name="neutral" quantity={neutral} />
+          <StatisticLine name="bad" quantity={bad} />
+          <StatisticLine name="total" quantity={total} />
+          <StatisticLine name="average" quantity={average} />
+          <StatisticLine name="positive" quantity={positive} />
+        </tbody>
+      </table>
     </>
   }
 }
