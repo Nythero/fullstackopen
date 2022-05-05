@@ -15,16 +15,24 @@ const Statistics = (props) => {
   const total = good + neutral + bad
   const average = (total === 0)? "0" : ((good - bad) / total)
   const positive = (total === 0)? "0 %" : `${good / total *100} %`
-
-  return <>
-    <Title title="statistics" />
-    <Statistic name="good" quantity={good} />
-    <Statistic name="neutral" quantity={neutral} />
-    <Statistic name="bad" quantity={bad} />
-    <Statistic name="total" quantity={total} />
-    <Statistic name="average" quantity={average} />
-    <Statistic name="positive" quantity={positive} />
-  </>
+  
+  if (total === 0) {
+    return <>
+      <Title title="statistics" />
+      <p>No feedback given</p>
+    </>
+  }
+  else {
+    return <>
+      <Title title="statistics" />
+      <Statistic name="good" quantity={good} />
+      <Statistic name="neutral" quantity={neutral} />
+      <Statistic name="bad" quantity={bad} />
+      <Statistic name="total" quantity={total} />
+      <Statistic name="average" quantity={average} />
+      <Statistic name="positive" quantity={positive} />
+    </>
+  }
 }
 
 const App = () => {
