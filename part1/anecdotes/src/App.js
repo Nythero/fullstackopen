@@ -4,6 +4,19 @@ const Button = (props) => (<button onClick={props.onClick}>
   {props.name}
 </button>)
 
+const MostVoted = (props) => {
+  const { anecdotes, votes } = props
+
+  const max = votes.reduce((previous, current) => (current > previous)? current : previous)
+
+  return (
+    <div>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[votes.indexOf(max)]}</p>
+    </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -37,6 +50,7 @@ const App = () => {
       <p>Has {votes[selected]} votes</p>
       <Button name="vote" onClick={handleClickVote}/>
       <Button name="next anecdote" onClick={handleClickNext}/>
+      <MostVoted anecdotes={anecdotes} votes={votes} />
     </div>
   )
 }
