@@ -17,20 +17,19 @@ const App = () => {
 
   const handleClick = (event) => {
     event.preventDefault()
-    
+
+    if(newName === '') 
+      return 0
+    else if(persons.find((e) => e.name === newName)) {
+      alert(`${newName} is already added to the phonebook`)
+      return 0
+    }
+
     const newPersons = [...persons]
     const newPerson = { name: newName }
 
-    const pushNoRepeated = (elem, array, comparatorFactory = (elem) => (e) => e == elem) => {
-      const comparator = comparatorFactory(elem)
-      if(!array.find(comparator)) {
-        array.push(elem)
-      }
-    }
-    const nameComparator = (elem) => (e) => e.name === elem.name
-
-    pushNoRepeated(newPerson, newPersons, nameComparator)
-
+    newPersons.push(newPerson)
+    
     setPersons(newPersons)
     setNewName('')
   }
