@@ -4,28 +4,34 @@ const Button = ({ onClick, text }) => <button type="submit" onClick={onClick}> {
 
 const Person = ({ person }) => <p>{person.name}</p>
 
-const Persons = ({ persons }) => persons.map((person) => <Person person={person} key={person.id} />)
+const Persons = ({ persons }) => persons.map(
+  (person) => <Person person={person} key={person.name} />)
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', id:0 }
+    { name: 'Arto Hellas' }
   ])
   const [newName, setNewName] = useState('')
-  const [personsQT, setPersonsQT] = useState(1)
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
+  const handleNameChange = (event) => setNewName(event.target.value)
 
   const handleClick = (event) => {
     event.preventDefault()
     
     const newPersons = [...persons]
-    const newPerson = { name: newName, id:personsQT }
-    newPersons.push(newPerson)
+    const newPerson = { name: newName }
+
+    const pushNoRepeated = (elem, array, comparatorFactory = (elem) => (e) => e == elem) => {
+      const comparator = comparatorFactory(elem)
+      if(!array.find(comparator)) {
+        array.push(elem)
+      }
+    }
+    const nameComparator = (elem) => (e) => e.name === elem.name
+
+    pushNoRepeated(newPerson, newPersons, nameComparator)
 
     setPersons(newPersons)
-    setPersonsQT(personsQT+1)
     setNewName('')
   }
 
