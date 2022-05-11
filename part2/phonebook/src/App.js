@@ -13,9 +13,12 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [filterName, setFilterName] = useState('')
 
   const handleValueChange = (stateSetter) => (event) => stateSetter(event.target.value)
 
+  const nameContainsFilterName = (e) => e.name.includes(filterName)
+  
   const setNewPhoneNumber = (value) => {
     const regex = /^[\d-]*$/
     if(regex.test(value)){
@@ -46,7 +49,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <p>Search by name</p>
+      <input value={filterName} onChange={handleValueChange(setFilterName)} />
       <form>
+      <h2>add a new entry</h2>
         <div>
           name: <input value={newName} onChange={handleValueChange(setNewName)} />
 	  phone number: <input 
@@ -58,7 +64,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons.filter(nameContainsFilterName)} />
     </div>
   )
 }
