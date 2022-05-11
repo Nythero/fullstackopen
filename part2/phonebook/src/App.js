@@ -1,15 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
 import Filter from './Filter'
 import PhonebookForm from './PhonebookForm'
 import PhoneNumbers from './PhoneNumbers'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '123-456-789' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filterName, setFilterName] = useState('')
+
+  useEffect(() => {
+    const request = async () => {
+      //This is needed because I wanted to access the website from my local network
+      const path = window.location.href.replace(/:[^\/]\S*/, ':3001/persons')
+      const response = await axios.get(path)
+
+      setPersons(response.data)
+    }
+    request()
+  }, [])
 
   const handleValueChange = (stateSetter) => (event) => stateSetter(event.target.value)
 
