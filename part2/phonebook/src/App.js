@@ -1,11 +1,7 @@
 import { useState } from 'react'
-
-const Button = ({ onClick, text }) => <button type="submit" onClick={onClick}> {text}</button>
-
-const Person = ({ person }) => <p>{person.name} {person.phone}</p>
-
-const Persons = ({ persons }) => persons.map(
-  (person) => <Person person={person} key={person.name} />)
+import Filter from './Filter'
+import PhonebookForm from './PhonebookForm'
+import PhoneNumbers from './PhoneNumbers'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -49,22 +45,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <p>Search by name</p>
-      <input value={filterName} onChange={handleValueChange(setFilterName)} />
-      <form>
-      <h2>add a new entry</h2>
-        <div>
-          name: <input value={newName} onChange={handleValueChange(setNewName)} />
-	  phone number: <input 
-	    value={newPhone}
-	    onChange={handleValueChange(setNewPhoneNumber)} />
-        </div>
-        <div>
-          <Button onClick={handleClick} text='add' />
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <Persons persons={persons.filter(nameContainsFilterName)} />
+      <Filter value={filterName} onChange={handleValueChange(setFilterName)} />
+      <PhonebookForm newName={newName} 
+        onNameChange={handleValueChange(setNewName)}
+        newPhone={newPhone}
+        onPhoneChange={handleValueChange(setNewPhoneNumber)}
+        onButtonClick={handleClick}
+      />
+      <PhoneNumbers persons={persons.filter(nameContainsFilterName)} />
     </div>
   )
 }
