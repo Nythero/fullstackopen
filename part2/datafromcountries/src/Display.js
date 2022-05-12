@@ -1,3 +1,5 @@
+import Weather from './Weather'
+
 const name = (country) => country.name.common
 
 const countryNormalized = (country) => ({
@@ -5,7 +7,9 @@ const countryNormalized = (country) => ({
   capitals: country.capital,
   languages: country.languages,
   currencies: country.currencies,
-  flag: country.flags.png
+  flag: country.flags.png,
+  lat: country.latlng[0],
+  lon: country.latlng[1]
 })
 
 const Capital = ({ country }) => (
@@ -47,6 +51,7 @@ const Country = ({ country }) => {
       <Languages country={countryN} />
       <Currencies country={countryN} />
       <img src={countryN.flag} alt={`${countryN.name}'s flag`} />
+      <Weather country={countryN} />
     </div>
   )
 }
