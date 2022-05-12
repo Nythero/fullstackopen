@@ -51,9 +51,22 @@ const Country = ({ country }) => {
   )
 }
 
-const Countries = ({ countries }) => countries.map(country => <p key={name(country)}>{name(country)}</p>)
+const CountryListee = ({ country, setCountry }) => {
+  const handleClick = (event) => {
+    setCountry(name(country))
+  }
 
-const Display = ({ countries }) => {
+  return (
+    <div>
+      <label>{name(country)}</label>
+      <button onClick={handleClick}>show</button>
+    </div>
+  )
+}
+
+const Countries = ({ countries, setCountry }) => countries.map(country => <CountryListee country={country} setCountry={setCountry} key={name(country)}/> )
+
+const Display = ({ countries, setCountry }) => {
   if(countries.length === 1){
     return <Country country={countries[0]} />
   }
@@ -64,7 +77,7 @@ const Display = ({ countries }) => {
     return <p>Too many countries. Narrow the search.</p>
   }
   else {
-    return <Countries countries={countries} />
+    return <Countries countries={countries} setCountry={setCountry} />
   }
 }
 

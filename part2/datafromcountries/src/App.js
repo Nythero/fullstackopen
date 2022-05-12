@@ -18,10 +18,20 @@ const App = () => {
 
   const name = (country) => country.name.common
 
+  const areEqualNames = (name1, name2) => name1.toLowerCase() === name2.toLowerCase()
+
+  const nameContains = (name1, name2) => name1.toLowerCase().includes(name2.toLowerCase())
+
+  const countryExists = countries.find(country => areEqualNames(countryName, name(country)))
+
+  const filterCondition = (country) => countryExists?
+    areEqualNames(name(country), countryName):
+    nameContains(name(country), countryName)
+    
   return (
     <div>
       <CountriesFinder country={countryName} setCountry={setCountryName}/>
-      <Display countries={countries.filter(country => name(country).includes(countryName))}/>
+      <Display countries={countries.filter(filterCondition)} setCountry={setCountryName}/>
     </div>
   );
 }
