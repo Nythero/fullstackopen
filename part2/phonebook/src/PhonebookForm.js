@@ -4,10 +4,10 @@ const PhonebookForm = ({ newName, onNameChange, newPhone, onPhoneChange, onButto
   <form>
     <h2>add a new entry</h2>
     <div>
-      name: <input value={newName} onChange={onNameChange} />
-      phone number: <input 
-        value={newPhone}
-        onChange={onPhoneChange} />
+      <label>name:</label>
+      <input value={newName} onChange={onNameChange} />
+      <label>phone number:</label>
+      <input value={newPhone} onChange={onPhoneChange} />
     </div>
     <div>
       <Button onClick={onButtonClick} text='add' />

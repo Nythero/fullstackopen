@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import PhonebookService from './PhonebookService'
 
 import Filter from './Filter'
 import PhonebookForm from './PhonebookForm'
@@ -13,11 +13,9 @@ const App = () => {
 
   useEffect(() => {
     const request = async () => {
-      //This is needed because I wanted to access the website from my local network
-      const path = window.location.href.replace(/:[^\/]\S*/, ':3001/persons')
-      const response = await axios.get(path)
+      const newPersons = await PhonebookService.getAll()
 
-      setPersons(response.data)
+      setPersons(newPersons)
     }
     request()
   }, [])
@@ -33,7 +31,7 @@ const App = () => {
     }
   }
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault()
 
     if(newName === '' || newPhone === '') 
@@ -43,10 +41,19 @@ const App = () => {
       return 0
     }
 
-    const newPersons = [...persons]
-    const newPerson = { name: newName, phone: newPhone }
+    const personData = { name: newName, number: newPhone }
 
-    newPersons.push(newPerson)
+    let newPerson
+
+    try {
+      newPerson = await PhonebookService.create(personData)
+    }
+    catch(err) {
+      alert('Couldn\' add the person to the phonebook')
+      return 0 
+    }
+
+    const newPersons = persons.concat(newPerson)
     
     setPersons(newPersons)
     setNewName('')
