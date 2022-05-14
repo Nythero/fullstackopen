@@ -1,4 +1,4 @@
-const Button = ({ onClick, text }) => <button type="submit" onClick={onClick}> {text}</button>
+import Button from './Button'
 
 const PhonebookForm = ({ newName, onNameChange, newPhone, onPhoneChange, onButtonClick }) => 
   <form>

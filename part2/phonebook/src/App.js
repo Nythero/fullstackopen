@@ -14,7 +14,6 @@ const App = () => {
   useEffect(() => {
     const request = async () => {
       const newPersons = await PhonebookService.getAll()
-
       setPersons(newPersons)
     }
     request()
@@ -34,27 +33,46 @@ const App = () => {
   const handleClick = async (event) => {
     event.preventDefault()
 
+    const personAlreadyExists = persons.some((p) => p.name === newName)
+
+    let newPersons 
+
     if(newName === '' || newPhone === '') 
       return 0
-    else if(persons.find((e) => e.name === newName)) {
-      alert(`${newName} is already added to the phonebook`)
-      return 0
+    else if(personAlreadyExists) {
+      if(!window.confirm(`${newName} already exists. Want to change the number?`))
+        return 0
+
+      const oldPerson = persons.find((p) => p.name === newName)
+      const personData = { name: newName, number: newPhone, id:oldPerson.id }
+  
+      let newPerson
+  
+      try {
+        newPerson = await PhonebookService.update(personData)
+      }
+      catch(err) {
+        alert('Couldn\' update the person in the phonebook')
+        return 0 
+      }
+  
+      newPersons = persons.filter(p => p.name !== newPerson.name).concat(newPerson)
     }
-
-    const personData = { name: newName, number: newPhone }
-
-    let newPerson
-
-    try {
-      newPerson = await PhonebookService.create(personData)
+    else {
+      const personData = { name: newName, number: newPhone }
+  
+      let newPerson
+  
+      try {
+        newPerson = await PhonebookService.create(personData)
+      }
+      catch(err) {
+        alert('Couldn\' add the person to the phonebook')
+        return 0 
+      }
+  
+      newPersons = persons.concat(newPerson)
     }
-    catch(err) {
-      alert('Couldn\' add the person to the phonebook')
-      return 0 
-    }
-
-    const newPersons = persons.concat(newPerson)
-    
     setPersons(newPersons)
     setNewName('')
     setNewPhone('')
@@ -70,7 +88,8 @@ const App = () => {
         onPhoneChange={handleValueChange(setNewPhoneNumber)}
         onButtonClick={handleClick}
       />
-      <PhoneNumbers persons={persons.filter(nameContainsFilterName)} />
+      <PhoneNumbers persons={persons.filter(nameContainsFilterName)}
+        setPersons={setPersons}/>
     </div>
   )
 }

@@ -5,16 +5,24 @@ const path = window.location.href.replace(/:[^/]\S*/, ':3001/persons')
 
 const getAll = async () => {
   const response = await axios.get(path)
-  
   return response.data  
 }
 
 const create = async (newPerson) => {
   const response = await axios.post(path, newPerson)
-
   return response.data
 }
 
-const PhonebookService = { getAll, create }
+const remove = async (personId) => {
+  const response = await axios.delete(`${path}/${personId}`)
+  return response.data
+}
+
+const update = async (newPerson) => {
+  const response = await axios.put(`${path}/${newPerson.id}`, newPerson)
+  return response.data
+}
+
+const PhonebookService = { getAll, create, remove, update }
 
 export default PhonebookService
