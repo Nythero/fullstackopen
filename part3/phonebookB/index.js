@@ -1,17 +1,28 @@
 const express = require('express')
 const app = express()
 
-const notes = require('./db.json')
+const persons = require('./db.json')
 
 app.get('/api/persons', (req, res) => {
-  res.status(200).json(notes)
+  res.status(200).json(persons)
+})
+
+app.get('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const person = persons.find(p => p.id === id)
+  if(person) {
+    res.status(200).json(person)
+  }
+  else {
+    res.status(404).end()
+  }
 })
 
 app.get('/info', (req, res) => {
   const html = `<html>
       <body>
         <p>
-	  Phonebook has info for ${notes.length}
+	  Phonebook has info for ${persons.length}
 	</p>
 	<p>
 	  ${new Date()}
