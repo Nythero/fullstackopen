@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
 
 let persons = require('./db.json')
 
@@ -13,6 +14,8 @@ const newId = () => {
     
   return id 
 }
+
+app.use(cors())
 
 app.use(express.json())
 
@@ -76,4 +79,6 @@ app.get('/info', (req, res) => {
   res.status(200).send(html)
 })
 
-app.listen(3000, () => console.log('Server listening in: http://localhost:3000'))
+const PORT = 3001
+
+app.listen(PORT, () => console.log(`Server listening in: http://localhost:${PORT}`))

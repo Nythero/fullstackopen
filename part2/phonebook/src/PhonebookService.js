@@ -1,10 +1,11 @@
 import axios from 'axios'
 
 //This is needed because I wanted to access the website from my local network
-const path = window.location.href.replace(/:[^/]\S*/, ':3001/persons')
+const path = window.location.href.replace(/:[^/]\S*/, ':3001/api/persons')
 
 const getAll = async () => {
   const response = await axios.get(path)
+  console.log('Response: ', response)
   return response.data  
 }
 
