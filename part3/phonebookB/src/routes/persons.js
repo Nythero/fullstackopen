@@ -57,4 +57,24 @@ Router.post('/', async (req, res, next) => {
   }
 })
 
+Router.put('/:id', async (req, res, next) => {
+  const { name, number } = req.body
+  const id = req.params.id
+
+  if(!name)
+    return res.status(400).json({error:'Missing name'})
+  else if(!number)
+    return res.status(400).json({error:'Missing number'})
+
+  const personData = { name, number } 
+
+  try {
+    const updatedPerson = await Person.findByIdAndUpdate(id, personData, { new: true })
+    res.status(200).json(updatedPerson)
+  }
+  catch(err) {
+    next(err)
+  }
+})
+
 module.exports = Router
