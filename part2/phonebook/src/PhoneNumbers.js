@@ -36,7 +36,7 @@ const Persons = ({ persons, setPersons, setNotificationMessage }) => {
   }
 
   return persons.map(
-    (person) => <PersonDisplay person={person} key={person.name} 
+    (person) => <PersonDisplay person={person} key={person.id} 
       handleClick={handleClick(person)} />
   )
 }
