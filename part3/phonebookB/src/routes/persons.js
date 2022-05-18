@@ -3,33 +3,42 @@ const Router = express.Router()
 
 const Person = require('../models/Person.js')
 
-Router.get('/', async (req, res) => {
-  const people = await Person.find({})
-  res.status(200).json(people)
-})
-
-Router.get('/:id', async (req, res) => {
-  const id = req.params.id
+Router.get('/', async (req, res, next) => {
   try {
-    const people = await Person.find({ _id:id })
-    if(people.length === 0) 
-      res.status(404).json({error:'Not Found'})
-    else 
-      res.status(200).json(people)
+    const people = await Person.find({})
+    res.status(200).json(people)
   }
   catch(err) {
-    res.status(400).json({error:`${id} is an invalid Id`})
+    next(err)
   }
 })
 
-Router.delete('/:id', async (req, res) => {
+Router.get('/:id', async (req, res, next) => {
   const id = req.params.id
-  await Person.deleteOne({ _id:id })
-  
-  res.status(204).end()
+  try {
+    const person = await Person.findById(id)
+    if(person) 
+      res.status(200).json(person)
+    else 
+      res.status(404).json({error:'Not Found'})
+  }
+  catch(err) {
+    next(err)
+  }
 })
 
-Router.post('/', async (req, res) => {
+Router.delete('/:id', async (req, res, next) => {
+  const id = req.params.id
+  try {
+    await Person.findByIdAndRemove(id)
+    res.status(204).end()
+  }
+  catch(err) {
+    next(err)
+  }
+})
+
+Router.post('/', async (req, res, next) => {
   const { name, number } = req.body
   
   if(!name)
@@ -39,9 +48,13 @@ Router.post('/', async (req, res) => {
 
   const personData = { name, number }
   const person = new Person(personData) 
-  await person.save()
-
-  res.status(201).json(person)
+  try{
+    await person.save()
+    res.status(201).json(person)
+  }
+  catch(err){
+    next(err)
+  }
 })
 
 module.exports = Router

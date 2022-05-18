@@ -5,7 +5,6 @@ const path = '/api/persons'
 
 const getAll = async () => {
   const response = await axios.get(path)
-  console.log('Response: ', response)
   return response.data  
 }
 

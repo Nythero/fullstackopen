@@ -9,15 +9,7 @@ const cors = require('cors')
 const personsRoute = require('./routes/persons.js')
 const infoRoute = require('./routes/info.js')
 
-const newId = () => {
-  let id
-  do {
-    id = Math.floor(Math.random() * 1000)
-  }
-  while(persons.some(p => p.id === id)) 
-    
-  return id 
-}
+const errorHandler = require('./errorHandler.js')
 
 app.use(express.static('build'))
 
@@ -33,6 +25,8 @@ app.use(morgan(':method :url :res[content-length] - :response-time ms :body'))
 app.use('/api/persons', personsRoute)
 
 app.get('/info', infoRoute)
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 

@@ -18,7 +18,7 @@ const Persons = ({ persons, setPersons, setNotificationMessage }) => {
       return
     try {
       await PhonebookService.remove(person.id)
-      const newPersons = persons.filter(p => p.name !== person.name)
+      const newPersons = persons.filter(p => p.id !== person.id)
       setPersons(newPersons)
       setNotificationMessage({
         type: 'notificationSuccess',
