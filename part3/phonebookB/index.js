@@ -79,6 +79,6 @@ app.get('/info', (req, res) => {
   res.status(200).send(html)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => console.log(`Server listening in: http://localhost:${PORT}`))
