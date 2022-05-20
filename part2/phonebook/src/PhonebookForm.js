@@ -12,10 +12,15 @@ const addNewPerson = async (persons, setPersons, person, setNotificationMessage)
     })
   }
   catch(err) {
+    console.error(err)
     setNotificationMessage({
       type: 'notificationError',
-      message: `Couldn't add ${person.name} to the phonebook.`
+      message: err.response.data.error
     })
+    if(err.response.data.error.includes("already exists.")) {
+      const newPersons = await PhonebookService.getAll()
+      setPersons(newPersons)
+    }
   }
 }
 
@@ -32,12 +37,16 @@ const updatePerson = async (persons, setPersons, person, setNotificationMessage)
     })
   }
   catch(err) {
+    console.error(err)
     setNotificationMessage({
       type: 'notificationError',
-      message: `${person.name} has been removed from the server.`
+      message: err.response.data.error
     })
-    const newPersons = persons.filter(p => p.name !== person.name)
-    setPersons(newPersons)
+    if(err.response.status === 404) {
+      const newPersons = persons.filter(p => p.id !== oldPerson.id)
+      setPersons(newPersons)
+    }
+      
   }
 }
 

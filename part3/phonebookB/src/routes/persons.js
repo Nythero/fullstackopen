@@ -40,16 +40,12 @@ Router.delete('/:id', async (req, res, next) => {
 
 Router.post('/', async (req, res, next) => {
   const { name, number } = req.body
-  
-  if(!name)
-    return res.status(400).json({error:'Missing name'})
-  else if(!number)
-    return res.status(400).json({error:'Missing number'})
 
   const personData = { name, number }
-  const person = new Person(personData) 
   try{
+    const person = new Person(personData) 
     await person.save()
+    console.log('person', person)
     res.status(201).json(person)
   }
   catch(err){
@@ -61,15 +57,37 @@ Router.put('/:id', async (req, res, next) => {
   const { name, number } = req.body
   const id = req.params.id
 
-  if(!name)
-    return res.status(400).json({error:'Missing name'})
-  else if(!number)
-    return res.status(400).json({error:'Missing number'})
 
-  const personData = { name, number } 
+  const newPersonData = (name, number) => {
+    const newUnset = (name, number) => {
+      const $unsetName = (name)? {} : { name: 1 }
+      const $unsetNumber = (number)? {} : { number : 1 }
+      return {...$unsetName, ...$unsetNumber}
+    }
+    const newSet = (name, number) => {
+      const $setName = (name)? { name: name } : {}
+      const $setNumber = (number)? { number: number } : {}
+      return {...$setName, ...$setNumber}
+    }
+    const $unset = newUnset(name, number)
+    const $set = newSet(name, number)
+
+    return { $unset, $set }
+  }
+
+  const personData = newPersonData(name, number) 
+  console.log('personData: ', personData)
 
   try {
-    const updatedPerson = await Person.findByIdAndUpdate(id, personData, { new: true })
+    const updatedPerson = await Person.findByIdAndUpdate(id, personData, 
+      {
+	new: true,
+	runValidators: true,
+	context: 'query'
+      })
+    if(updatedPerson === null)
+      return res.status(404).json({ error: 'Not Found' })
+	  console.log(updatedPerson)
     res.status(200).json(updatedPerson)
   }
   catch(err) {
