@@ -17,10 +17,10 @@ Router.get('/:id', async (req, res, next) => {
   const id = req.params.id
   try {
     const person = await Person.findById(id)
-    if(person) 
+    if(person)
       res.status(200).json(person)
-    else 
-      res.status(404).json({error:'Not Found'})
+    else
+      res.status(404).json({ error:'Not Found' })
   }
   catch(err) {
     next(err)
@@ -43,7 +43,7 @@ Router.post('/', async (req, res, next) => {
 
   const personData = { name, number }
   try{
-    const person = new Person(personData) 
+    const person = new Person(personData)
     await person.save()
     console.log('person', person)
     res.status(201).json(person)
@@ -62,12 +62,12 @@ Router.put('/:id', async (req, res, next) => {
     const newUnset = (name, number) => {
       const $unsetName = (name)? {} : { name: 1 }
       const $unsetNumber = (number)? {} : { number : 1 }
-      return {...$unsetName, ...$unsetNumber}
+      return { ...$unsetName, ...$unsetNumber }
     }
     const newSet = (name, number) => {
       const $setName = (name)? { name: name } : {}
       const $setNumber = (number)? { number: number } : {}
-      return {...$setName, ...$setNumber}
+      return { ...$setName, ...$setNumber }
     }
     const $unset = newUnset(name, number)
     const $set = newSet(name, number)
@@ -75,19 +75,19 @@ Router.put('/:id', async (req, res, next) => {
     return { $unset, $set }
   }
 
-  const personData = newPersonData(name, number) 
+  const personData = newPersonData(name, number)
   console.log('personData: ', personData)
 
   try {
-    const updatedPerson = await Person.findByIdAndUpdate(id, personData, 
+    const updatedPerson = await Person.findByIdAndUpdate(id, personData,
       {
-	new: true,
-	runValidators: true,
-	context: 'query'
+        new: true,
+        runValidators: true,
+        context: 'query'
       })
     if(updatedPerson === null)
       return res.status(404).json({ error: 'Not Found' })
-	  console.log(updatedPerson)
+    console.log(updatedPerson)
     res.status(200).json(updatedPerson)
   }
   catch(err) {

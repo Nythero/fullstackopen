@@ -11,7 +11,7 @@ const numberValidator = (v) => {
 async function nameValidator(v){
   //This is necessary since create and update mongoose methods
   //have different contexts
-  let model 
+  let model
   let id
   try {
     model = this.model('Person')

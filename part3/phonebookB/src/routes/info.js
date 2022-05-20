@@ -16,7 +16,7 @@ const info = async (req, res, next) => {
     res.status(200).send(html)
   }
   catch(err) {
-    next(err)  
+    next(err)
   }
 }
 
