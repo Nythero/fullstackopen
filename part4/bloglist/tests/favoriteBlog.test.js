@@ -23,10 +23,10 @@ describe('favorite blog', () => {
   })
   test('of a blog list with multiple blogs with the most likes is the one with a lower position in the list', () => {
     const blog  = {
-      _id: "123456789012345678901234",
-      title: "Sample Text",
-      author: "Sample Text",
-      url: "http://www.sample.url",
+      _id: '123456789012345678901234',
+      title: 'Sample Text',
+      author: 'Sample Text',
+      url: 'http://www.sample.url',
       likes: 12,
       __v: 0
     }

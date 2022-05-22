@@ -26,7 +26,7 @@ const mostBlogs = (blogs) => {
   return authorsWithBlogs(blogs).reduce(authorWithMoreBlogs)
 }
 
-const likesQuantity = (author, blogs) => 
+const likesQuantity = (author, blogs) =>
   blogs.reduce((likes, a) => likes + ((author === a.author)? a.likes : 0), 0)
 
 const authorWithLikes = (blogs) => (a) => ({ author: a, likes: likesQuantity(a, blogs) })
