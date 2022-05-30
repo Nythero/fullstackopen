@@ -25,7 +25,6 @@ test('blogs are returned as json', async () => {
 
 test('blogs have property id', async () => {
   const response = await api.get('/api/blogs')
-  console.log(response.body[0].id)
 
   for(const blog of response.body) {
     expect(blog.id).toBeDefined()
@@ -52,6 +51,32 @@ test('a valid blog can be added', async () => {
   for(const property in newBlog) {
     expect(blog[property]).toEqual(newBlog[property])
   }
+
+  const blogs = (await api.get('/api/blogs')).body
+
+  expect(blogs.length).toBe(dummyBlogs.length + 1)
+  expect(blogs).toContainEqual(blog)
+})
+
+test('a blog without likes can be added', async () => {
+  const newBlog = {
+    title: 'Sample Text',
+    author: 'Sample Text',
+    url: 'http://sample.url',
+  }
+  
+  const response = await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blog = response.body
+
+  for(const property in newBlog) {
+    expect(blog[property]).toEqual(newBlog[property])
+  }
+  expect(blog.likes).toBeDefined()
+  expect(blog.likes).toBe(0)
 
   const blogs = (await api.get('/api/blogs')).body
 
