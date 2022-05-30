@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const middleware = require('./utils/middleware.js')
 
 const { MONGODB_URI } = require('./utils/config.js')
 
@@ -13,5 +14,8 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/blogs', blogs)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app

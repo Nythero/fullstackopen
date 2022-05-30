@@ -8,7 +8,7 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  Promise.all(dummyBlogs.map(async blog => {
+  await Promise.all(dummyBlogs.map(async blog => {
     const blogObject = new Blog(blog)
     return await blogObject.save()
   }))
@@ -83,6 +83,41 @@ test('a blog without likes can be added', async () => {
   expect(blogs.length).toBe(dummyBlogs.length + 1)
   expect(blogs).toContainEqual(blog)
 })
+
+test('a blog without title cant be added', async () => {
+   const newBlog = {
+    author: 'Sample Text',
+    url: 'http://sample.url',
+    likes: 3
+  }
+  
+  const response = await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  const blogs = (await api.get('/api/blogs')).body
+
+  expect(blogs.length).toEqual(dummyBlogs.length)
+})
+
+test('a blog without url cant be added', async () => {
+   const newBlog = {
+    title: 'Sample Text',
+    author: 'Sample Text',
+    likes: 3
+  }
+  
+  const response = await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  const blogs = (await api.get('/api/blogs')).body
+
+  expect(blogs.length).toEqual(dummyBlogs.length)
+})
+
 
 afterAll(() => {
   mongoose.connection.close()

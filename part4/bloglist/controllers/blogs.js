@@ -14,7 +14,6 @@ Router.get('/', async (request, response, next) => {
 
 Router.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
-
   try {
     const result = await blog.save()
     response.status(201).json(result)
