@@ -13,10 +13,48 @@ Router.get('/', async (request, response, next) => {
 })
 
 Router.post('/', async (request, response, next) => {
-  const blog = new Blog(request.body)
+  const blogData = {
+    title: request.body.title,
+    author: request.body.author,
+    url: request.body.url,
+    likes: request.body.likes
+  }
+
+  const blog = new Blog(blogData)
   try {
     const result = await blog.save()
     response.status(201).json(result)
+  }
+  catch(err) {
+    next(err)
+  }
+})
+
+Router.delete('/:id', async (request, response, next) => {
+  const id = request.params.id
+
+  try {
+    await Blog.findByIdAndRemove(id)
+    response.status(204).end()
+  }
+  catch(err) {
+    next(err)
+  }
+})
+
+Router.put('/:id', async (request, response, next) => {
+  const id = request.params.id
+  const blogData = {
+    likes: request.body.likes
+  }
+
+  try {
+    const blog = await Blog.findByIdAndUpdate(id, blogData, {
+      new: true
+    })
+    if(blog === null)
+      return response.status(404).json({ error: 'Not Found' })
+    response.status(200).json(blog)
   }
   catch(err) {
     next(err)
