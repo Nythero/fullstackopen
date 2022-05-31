@@ -34,6 +34,31 @@ test('blogs have property id', async () => {
   }
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Sample Text',
+    author: 'Sample Text',
+    url: 'http://sample.url',
+    likes: 3,
+  }
+
+  const response = await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blog = response.body
+
+  for(const property in newBlog) {
+    expect(blog[property]).toEqual(newBlog[property])
+  }
+
+  const blogs = (await api.get('/api/blogs')).body
+
+  expect(blogs.length).toBe(dummyBlogs.length + 1)
+  expect(blogs).toContainEqual(blog)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
