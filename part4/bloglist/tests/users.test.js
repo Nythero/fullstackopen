@@ -42,7 +42,7 @@ describe('when there\'s no users', () => {
   })
 })
 
-describe('when there\'s a user already in the database', () => {
+describe('when there\'s an user already in the database', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
@@ -56,9 +56,11 @@ describe('when there\'s a user already in the database', () => {
   })
 
   test('asking for the list of users succeeds', async () => {
-    const users = await api.get('/api/users')
+    const response = await api.get('/api/users')
       .expect(200)
       .expect('Content-Type', /application\/json/)
+
+    const users = response.body
 
     expect(users.length).toBe(1)
   })
@@ -74,7 +76,6 @@ describe('when there\'s a user already in the database', () => {
       .send(userData)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-
     const user = response.body
 
     expect(user.username).toBeDefined()
@@ -86,6 +87,69 @@ describe('when there\'s a user already in the database', () => {
 
     expect(users.length).toBe(2)
     expect(users).toContainEqual(user)
+  })
+
+  test('addition of an user without username fails', async () => {
+    const userData = {
+      name: 'name',
+      password: 'password'
+    }
+
+    await api.post('/api/users')
+      .send(userData)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('addition of an user with an username with less than 3 characters fails', async () => {
+    const userData = {
+      username: 'us',
+      name: 'name',
+      password: 'password'
+    }
+
+    await api.post('/api/users')
+      .send(userData)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('addition of an user without password fails', async () => {
+    const userData = {
+      username: 'username2',
+      name: 'name'
+    }
+
+    await api.post('/api/users')
+      .send(userData)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('addition of an user with a password with less than 3 characters fails', async () => {
+    const userData = {
+      username: 'username2',
+      name: 'name',
+      password: 'pa'
+    }
+
+    await api.post('/api/users')
+      .send(userData)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('addition of an user with a not unique username fails', async () => {
+    const userData = {
+      username: 'username',
+      name: 'name',
+      password: 'password'
+    }
+
+    await api.post('/api/users')
+      .send(userData)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
   })
 })
 
