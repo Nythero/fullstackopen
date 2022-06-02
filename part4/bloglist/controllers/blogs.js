@@ -1,10 +1,14 @@
 const Router = require('express').Router()
 
 const Blog = require('../models/Blog.js')
+const User = require('../models/User.js')
 
 Router.get('/', async (request, response, next) => {
   try {
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).populate('user', {
+      username: 1,
+      name: 1
+    })
     response.json(blogs)
   }
   catch(err) {
@@ -13,16 +17,23 @@ Router.get('/', async (request, response, next) => {
 })
 
 Router.post('/', async (request, response, next) => {
+  const user = await User.findOne({})
+  if(!user)
+    return response.status(500).json({ error: 'can\'t find a user to assign' })
+
   const blogData = {
     title: request.body.title,
     author: request.body.author,
     url: request.body.url,
-    likes: request.body.likes
+    likes: request.body.likes,
+    user: user._id
   }
 
   const blog = new Blog(blogData)
   try {
     const result = await blog.save()
+    user.blogs = user.blogs.concat(result._id)
+    await user.save()
     response.status(201).json(result)
   }
   catch(err) {

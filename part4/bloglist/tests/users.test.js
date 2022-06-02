@@ -55,16 +55,50 @@ describe('when there\'s an user already in the database', () => {
     await user.save()
   })
 
-  test('asking for the list of users succeeds', async () => {
-    const response = await api.get('/api/users')
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+  describe('when getting the list of users', () => {
+    test('asking for the list of users succeeds', async () => {
+      const response = await api.get('/api/users')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+    })
 
-    const users = response.body
+    test('users have property blogs', async () => {
+      const response = await api.get('/api/users')
 
-    expect(users.length).toBe(1)
-  })
+      const users = response.body
 
+      expect(users.length).toBe(1)
+      for(const user of users) {
+        expect(user.blogs).toBeDefined()
+        expect(user.blogs).toEqual([])
+      }
+    })
+
+    test('users.blogs follows the schema', async () => {
+      const newBlog = {
+        title: 'Sample Text',
+        author: 'Sample Text',
+        url: 'http://sample.url',
+        likes: 3,
+      }
+    
+      await api.post('/api/blogs')
+        .send(newBlog)
+      
+      const response = await api.get('/api/users')
+      const users = response.body
+      const user = users[0]
+      expect(user.blogs.length).toBe(1)
+
+      const blog = user.blogs[0]
+      const properties = Object.keys(newBlog)
+      for(const p of properties) {
+        expect(blog[p]).toBeDefined()
+        expect(blog[p]).toBe(newBlog[p])
+      }
+    })  
+  })    
+        
   test('addition of a valid user succeeds', async () => {
     const userData = {
       username: 'username2',
