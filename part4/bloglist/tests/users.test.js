@@ -57,7 +57,7 @@ describe('when there\'s an user already in the database', () => {
 
   describe('when getting the list of users', () => {
     test('asking for the list of users succeeds', async () => {
-      const response = await api.get('/api/users')
+      await api.get('/api/users')
         .expect(200)
         .expect('Content-Type', /application\/json/)
     })
@@ -81,10 +81,10 @@ describe('when there\'s an user already in the database', () => {
         url: 'http://sample.url',
         likes: 3,
       }
-    
+
       await api.post('/api/blogs')
         .send(newBlog)
-      
+
       const response = await api.get('/api/users')
       const users = response.body
       const user = users[0]
@@ -96,9 +96,9 @@ describe('when there\'s an user already in the database', () => {
         expect(blog[p]).toBeDefined()
         expect(blog[p]).toBe(newBlog[p])
       }
-    })  
-  })    
-        
+    })
+  })
+
   test('addition of a valid user succeeds', async () => {
     const userData = {
       username: 'username2',
