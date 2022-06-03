@@ -177,21 +177,63 @@ describe('when there are multiple blogs already in the database', () => {
       })
     })
 
-    describe('deletion of', () => {
-      test('a blog with given id succeeds', async () => {
-        const id = dummyBlogs[0]._id
+    describe('deletion', () => {
+      describe('while logged in', () => {
+        let token
+        beforeEach(async () => {
+          const credentials = {
+            username: 'username',
+            password: 'password'
+          }
+          const response = await api.post('/api/login')
+            .send(credentials)
+          token = response.body.token
+        })
 
-        await api.delete(`/api/blogs/${id}`)
-          .expect(204)
+        test('a blog from the user succeeds', async () => {
+          const id = dummyBlogs[0]._id
 
-        const blogs = (await api.get('/api/blogs')).body
+          await api.delete(`/api/blogs/${id}`)
+            .set('Authorization', `bearer ${token}`)
+            .expect(204)
 
-        expect(blogs.length).toBe(dummyBlogs.length - 1)
+          const blogs = (await api.get('/api/blogs')).body
+
+          expect(blogs.length).toBe(dummyBlogs.length - 1)
+        })
+
+        test('a blog without id fails', async () => {
+          await api.delete('/api/blogs')
+            .set('Authorization', `bearer ${token}`)
+            .expect(404)
+        })
+
+        test('a blog from another user fails', async () => {
+          const userData =  {
+            username: 'username2',
+            name: 'name',
+            password: 'password2'
+          }
+          await api.post('/api/users')
+            .send(userData)
+
+          const response = await api.post('/api/login')
+            .send(userData)
+          const token2 = response.body.token
+
+          const id = dummyBlogs[0]._id
+          await api.delete(`/api/blogs/${id}`)
+            .set('Authorization', `bearer ${token2}`)
+            .expect(401)
+        })
       })
+      describe('while not logged in', () => {
+        test('a blog from fails', async () => {
+          const id = dummyBlogs[0]._id
 
-      test('a blog without id fails', async () => {
-        await api.delete('/api/blogs')
-          .expect(404)
+          await api.delete(`/api/blogs/${id}`)
+            .expect(401)
+        })
       })
     })
 
