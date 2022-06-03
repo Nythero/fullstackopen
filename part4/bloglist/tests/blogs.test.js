@@ -18,11 +18,16 @@ describe('when there are multiple blogs already in the database', () => {
       const savedUser = await user.save()
 
       await Blog.deleteMany({})
-      await Promise.all(dummyBlogs.map(async blog => {
+      const blogs = await Promise.all(dummyBlogs.map(async blog => {
         const blogData = { ...blog, user: savedUser._id }
         const blogObject = new Blog(blogData)
         return await blogObject.save()
       }))
+
+      for(const blog of blogs) {
+        savedUser.blogs = savedUser.blogs.concat(blog)
+        await savedUser.save()
+      }
     })
 
     describe('when getting the list of blogs', () => {
@@ -60,7 +65,7 @@ describe('when there are multiple blogs already in the database', () => {
 
     describe('addition', () => {
       describe('while not logged in', () => {
-        test('a valid blog succeeds', async () => {
+        test('a valid blog fails', async () => {
           const newBlog = {
             title: 'Sample Text',
             author: 'Sample Text',
@@ -228,7 +233,7 @@ describe('when there are multiple blogs already in the database', () => {
         })
       })
       describe('while not logged in', () => {
-        test('a blog from fails', async () => {
+        test('a blog fails', async () => {
           const id = dummyBlogs[0]._id
 
           await api.delete(`/api/blogs/${id}`)

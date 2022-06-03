@@ -1,10 +1,6 @@
 const Router = require('express').Router()
-const jwt = require('jsonwebtoken')
-
 const Blog = require('../models/Blog.js')
-const User = require('../models/User.js')
-
-const { SECRET } = require('../utils/config.js')
+const { userExtractor } = require('../utils/middleware.js')
 
 Router.get('/', async (request, response, next) => {
   try {
@@ -19,23 +15,8 @@ Router.get('/', async (request, response, next) => {
   }
 })
 
-Router.post('/', async (request, response, next) => {
-  const token = request.token
-
-  let decodedToken
-  try {
-    decodedToken = jwt.verify(token, SECRET)
-  }
-  catch(err) {
-    if(err.message === 'jwt must be provided')
-      decodedToken = {}
-    else
-      next(err)
-  }
-  if(!decodedToken.id)
-    return response.status(401).json({ error: 'token missing or invalid' })
-
-  const user = await User.findById(decodedToken.id)
+Router.post('/', userExtractor, async (request, response, next) => {
+  const user = request.user
 
   const blogData = {
     title: request.body.title,
@@ -57,26 +38,11 @@ Router.post('/', async (request, response, next) => {
   }
 })
 
-Router.delete('/:id', async (request, response, next) => {
-  const token = request.token
-
-  let decodedToken
-  try {
-    decodedToken = jwt.verify(token, SECRET)
-  }
-  catch(err) {
-    if(err.message === 'jwt must be provided')
-      decodedToken = {}
-    else
-      next(err)
-  }
-  if(!decodedToken.id)
-    return response.status(401).json({ error: 'token missing or invalid' })
-
+Router.delete('/:id', userExtractor, async (request, response, next) => {
   const id = request.params.id
-  const blog = await Blog.findById(id)
-
-  if(blog.user.toString() !== decodedToken.id)
+  const user = request.user
+  const blogs = user.blogs.map(b => b.toString())
+  if(!blogs.includes(id))
     return response.status(401).json({ error: 'blog belongs to another user' })
 
   try {

@@ -13,7 +13,7 @@ describe('when there\'s no users', () => {
   })
 
   test('asking for the list of users succeeds', async () => {
-    api.get('/api/users')
+    await api.get('/api/users')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
