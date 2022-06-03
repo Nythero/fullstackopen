@@ -14,6 +14,7 @@ mongoose.connect(MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())
+app.use(middleware.tokenExtractor)
 
 app.use('/api/blogs', blogs)
 app.use('/api/users', users)

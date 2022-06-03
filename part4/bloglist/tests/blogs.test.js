@@ -5,7 +5,6 @@ const Blog = require('../models/Blog.js')
 const User = require('../models/User.js')
 const dummyBlogs = require('./dummyBlogs.js')
 const dummyUser = require('./dummyUser.js')
-const bcrypt = require('bcrypt')
 
 const api = supertest(app)
 
@@ -68,9 +67,9 @@ describe('when there are multiple blogs already in the database', () => {
             url: 'http://sample.url',
             likes: 3,
           }
-  
+
           await api.post('/api/blogs')
-            .send(newBlog)         
+            .send(newBlog)
             .expect(401)
             .expect('Content-Type', /application\/json/)
         })
@@ -86,7 +85,7 @@ describe('when there are multiple blogs already in the database', () => {
             .send(credentials)
           token = response.body.token
         })
-  
+
         test('a valid blog succeeds', async () => {
           const newBlog = {
             title: 'Sample Text',
@@ -94,85 +93,85 @@ describe('when there are multiple blogs already in the database', () => {
             url: 'http://sample.url',
             likes: 3,
           }
-  
+
           const response = await api.post('/api/blogs')
             .set('Authorization', `bearer ${token}`)
-            .send(newBlog)         
+            .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
-  
+
           const blog = response.body
-  
+
           for(const property in newBlog) {
             expect(blog[property]).toEqual(newBlog[property])
           }
           expect(blog.user).toBeDefined()
-  
+
           const blogs = (await api.get('/api/blogs')).body
-  
+
           expect(blogs.length).toBe(dummyBlogs.length + 1)
         })
-  
+
         test('a blog without likes succeeds', async () => {
           const newBlog = {
             title: 'Sample Text',
             author: 'Sample Text',
             url: 'http://sample.url',
           }
-  
+
           const response = await api.post('/api/blogs')
             .set('Authorization', `bearer ${token}`)
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
-  
+
           const blog = response.body
-  
+
           for(const property in newBlog) {
             expect(blog[property]).toEqual(newBlog[property])
           }
           expect(blog.likes).toBeDefined()
           expect(blog.likes).toBe(0)
-  
+
           const blogs = (await api.get('/api/blogs')).body
-  
+
           expect(blogs.length).toBe(dummyBlogs.length + 1)
           expect(blogs.some(b => b.id === blog.id)).toBeTruthy()
         })
-  
+
         test('a blog without title fails', async () => {
           const newBlog = {
             author: 'Sample Text',
             url: 'http://sample.url',
             likes: 3
           }
-  
+
           await api.post('/api/blogs')
             .set('Authorization', `bearer ${token}`)
             .send(newBlog)
             .expect(400)
             .expect('Content-Type', /application\/json/)
-  
+
           const blogs = (await api.get('/api/blogs')).body
-  
+
           expect(blogs.length).toEqual(dummyBlogs.length)
         })
-  
+
         test('a blog without url fails', async () => {
           const newBlog = {
             title: 'Sample Text',
             author: 'Sample Text',
             likes: 3
           }
-  
+
           await api.post('/api/blogs')
             .set('Authorization', `bearer ${token}`)
             .send(newBlog)
             .expect(400)
             .expect('Content-Type', /application\/json/)
-  
+
           const blogs = (await api.get('/api/blogs')).body
-  
+
           expect(blogs.length).toEqual(dummyBlogs.length)
         })
       })

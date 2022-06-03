@@ -6,13 +6,6 @@ const User = require('../models/User.js')
 
 const { SECRET } = require('../utils/config.js')
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer '))
-    return authorization.substring(7)
-  return null
-}
-
 Router.get('/', async (request, response, next) => {
   try {
     const blogs = await Blog.find({}).populate('user', {
@@ -27,7 +20,7 @@ Router.get('/', async (request, response, next) => {
 })
 
 Router.post('/', async (request, response, next) => {
-  const token = getTokenFrom(request)
+  const token = request.token
 
   let decodedToken
   try {
