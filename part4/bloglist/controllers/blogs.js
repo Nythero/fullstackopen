@@ -1,7 +1,17 @@
 const Router = require('express').Router()
+const jwt = require('jsonwebtoken')
 
 const Blog = require('../models/Blog.js')
 const User = require('../models/User.js')
+
+const { SECRET } = require('../utils/config.js')
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer '))
+    return authorization.substring(7)
+  return null
+}
 
 Router.get('/', async (request, response, next) => {
   try {
@@ -17,9 +27,22 @@ Router.get('/', async (request, response, next) => {
 })
 
 Router.post('/', async (request, response, next) => {
-  const user = await User.findOne({})
-  if(!user)
-    return response.status(500).json({ error: 'can\'t find a user to assign' })
+  const token = getTokenFrom(request)
+
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(token, SECRET)
+  }
+  catch(err) {
+    if(err.message === 'jwt must be provided')
+      decodedToken = {}
+    else
+      next(err)
+  }
+  if(!decodedToken.id)
+    return response.status(401).json({ error: 'token missing or invalid' })
+
+  const user = await User.findById(decodedToken.id)
 
   const blogData = {
     title: request.body.title,

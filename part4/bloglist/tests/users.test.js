@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app.js')
 const User = require('../models/User.js')
+const bcrypt = require('bcrypt')
+const dummyUser = require('./dummyUser.js')
 
 const api = supertest(app)
 
@@ -46,11 +48,7 @@ describe('when there\'s an user already in the database', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
-    const userData = {
-      username: 'username',
-      name: 'name',
-      password: 'password'
-    }
+    const userData = await dummyUser()
     const user = new User(userData)
     await user.save()
   })
@@ -81,8 +79,14 @@ describe('when there\'s an user already in the database', () => {
         url: 'http://sample.url',
         likes: 3,
       }
+      const credentials = {
+        username: 'username',
+        password: 'password'
+      }
 
+      const token = (await api.post('/api/login').send(credentials)).body.token
       await api.post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(newBlog)
 
       const response = await api.get('/api/users')
