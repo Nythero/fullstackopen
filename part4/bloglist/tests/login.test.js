@@ -7,13 +7,17 @@ const bcrypt = require('bcrypt')
 const api = supertest(app)
 
 describe('when there\'s no users', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+  })
+
   test('login fails', async () => {
     const credentials = {
       username: 'username',
       password: 'password'
     }
 
-    api.post('/api/login')
+    await api.post('/api/login')
       .send(credentials)
       .expect(401)
       .expect('Content-Type', /application\/json/)
