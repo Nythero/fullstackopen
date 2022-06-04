@@ -8,6 +8,7 @@ const handleClick = (username, password, setUser, setUsername, setPassword) => a
   setUsername('')
   setPassword('')
   setUser(token)
+  window.localStorage.setItem('loggedBlogUser', JSON.stringify(token))
 }
 
 const LoginForm = ({ username, setUsername, password, setPassword, setUser }) => {

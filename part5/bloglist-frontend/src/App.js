@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
+import Logout from './components/Logout'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,9 +15,21 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem('loggedBlogUser')
+    if(loggedUser) {
+      const u = JSON.parse(loggedUser)
+      setUser(u)
+    }
+  }, [])
 
   if(user !== null) {
-    return <Blogs blogs={blogs} user={user}/>
+    return (
+      <>
+        <Blogs blogs={blogs} user={user}/>
+        <Logout setUser={setUser} />
+      </>
+    )
   }
   return <LoginForm 
     username={username}
