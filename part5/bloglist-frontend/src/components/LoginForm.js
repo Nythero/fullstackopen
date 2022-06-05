@@ -1,4 +1,5 @@
 import loginService from '../services/login'
+import blogService from '../services/blogs'
 
 const handleChange = (setter) => (event) => setter(event.target.value)
 
@@ -8,6 +9,9 @@ const handleClick = (username, password, setUser, setUsername, setPassword) => a
   setUsername('')
   setPassword('')
   setUser(token)
+  if(token === null)
+    return
+  blogService.setToken(token.token)
   window.localStorage.setItem('loggedBlogUser', JSON.stringify(token))
 }
 
