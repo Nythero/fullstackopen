@@ -7,18 +7,21 @@ import Logout from './components/Logout'
 const App = () => {
   const blogsState = useState([])
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const usernameState = useState('')
+  const passwordState = useState('')
   const titleState = useState('')
   const authorState = useState('')
   const urlState = useState('')
+  const notificationState = useState(null)
 
+  const setBlogs = blogsState[1]
   useEffect(() => {
-    const setBlogs = blogsState[1]
-    blogService.getAll().then(blogs =>
+    const setInitialBlogs = async () => {
+      const blogs = await blogService.getAll()
       setBlogs(blogs)
-    )  
-  }, [])
+    }
+    setInitialBlogs()
+  }, [setBlogs])
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedBlogUser')
     if(loggedUser) {
@@ -36,17 +39,17 @@ const App = () => {
           user={user}
           titleState={titleState}
           authorState={authorState}
-          urlState={urlState}/>
-        <Logout setUser={setUser} />
+          urlState={urlState}
+          notificationState={notificationState} />
+        <Logout setUser={setUser} notificationState={notificationState} />
       </>
     )
   }
   return <LoginForm 
-    username={username}
-    setUsername={setUsername}
-    password={password}
-    setPassword={setPassword}
-    setUser={setUser}/>
+    usernameState={usernameState}
+    passwordState={passwordState}
+    setUser={setUser}
+    notificationState={notificationState} />
 }
 
 export default App
