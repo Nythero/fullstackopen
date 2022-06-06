@@ -15,7 +15,7 @@ const Blogs = ({ user, ...states }) => {
       <Toggable ref={blogFormRef}>
         <BlogForm states={states} blogFormRef={blogFormRef}/>
       </Toggable>
-      <BlogList blogsState={blogsState} />
+      <BlogList blogsState={blogsState} user={user} />
     </div>
   )
 }

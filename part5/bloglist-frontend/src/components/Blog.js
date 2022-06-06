@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import populateBlog from '../utils/populateBlog'
+import DeleteBlogButton from './DeleteBlogButton'
 
 const blogDataFrom = async (blog) => {
   const { title, author, url, likes, user } = blog
@@ -30,7 +31,7 @@ const like = (blog, blogsState) => async () => {
   }
 }
 
-const Blog = ({ blog, blogsState }) => {
+const Blog = ({ blog, blogsState, user }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => setVisible(!visible)
@@ -48,6 +49,7 @@ const Blog = ({ blog, blogsState }) => {
         <br />
         {blog.user.name}
         <br />
+        <DeleteBlogButton blog={blog} user={user} blogsState={blogsState} />
       </div>
     )
   }

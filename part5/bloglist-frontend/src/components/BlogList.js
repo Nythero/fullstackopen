@@ -1,7 +1,7 @@
 import Blog from './Blog'
 
-const blogComponent = blogsState => blog => {
-  return <Blog key={blog.id} blog={blog} blogsState={blogsState}/>
+const blogComponent = (blogsState, user) => blog => {
+  return <Blog key={blog.id} blog={blog} blogsState={blogsState} user={user}/>
 }
 
 const sortingBlogsFunction = (b1, b2) => {
@@ -13,10 +13,10 @@ const sortingBlogsFunction = (b1, b2) => {
     return 0
 }
 
-const BlogList = ({ blogsState }) => {
+const BlogList = ({ blogsState, user }) => {
   const [blogs] = blogsState
   const sortedBlogs = blogs.sort(sortingBlogsFunction)
-  return sortedBlogs.map(blogComponent(blogsState))
+  return sortedBlogs.map(blogComponent(blogsState, user))
 }
 
 export default BlogList
