@@ -31,7 +31,7 @@ const resetBlogState = ({ titleState, authorState, urlState }) => {
   setState(urlState, '')
 }
 
-const handleClick = ({ blogsState, notificationState, ...blogState }) => async (event) => {
+const handleClick = ({ blogsState, notificationState, ...blogState }, blogFormRef) => async (event) => {
   const blogData = blogDataFromStates(blogState)
   event.preventDefault()
   const setNotification = notificationSetter(notificationState)
@@ -39,6 +39,7 @@ const handleClick = ({ blogsState, notificationState, ...blogState }) => async (
     const blog = await postBlog(blogData)
     addBlog(blogsState, blog)
     setNotification('notificationSuccess', `added blog '${blog.title}'`)
+    blogFormRef.current.toggleVisibility()
   }
   catch (err) {
     if(err.name === 'AxiosError') {
@@ -65,14 +66,14 @@ const InputField = ({ name, state }) => {
   )
 }
 
-const BlogForm = ({ states }) => {
+const BlogForm = ({ states, blogFormRef }) => {
   const { titleState, authorState, urlState } = states
   return (
     <form>
       <InputField name='title' state={titleState}/>
       <InputField name='author' state={authorState}/>
       <InputField name='url' state={urlState}/>
-      <button onClick={handleClick(states)}>create</button>
+      <button onClick={handleClick(states, blogFormRef)}>create</button>
     </form>
   )
 }
