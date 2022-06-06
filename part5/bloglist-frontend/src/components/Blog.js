@@ -1,6 +1,36 @@
 import { useState } from 'react'
+import blogService from '../services/blogs'
+import populateBlog from '../utils/populateBlog'
 
-const Blog = ({blog}) => {
+const blogDataFrom = async (blog) => {
+  const { title, author, url, likes, user } = blog
+  return {
+    title,
+    author,
+    url,
+    likes: likes + 1,
+    user: user.id
+  }
+}
+
+const like = (blog, blogsState) => async () => {
+  const { id } = blog
+  const blogData = await blogDataFrom(blog)
+  try {
+    const blogResponse = await blogService.put(id, blogData)
+    const updatedBlog = await populateBlog(blogResponse)
+    const [blogs, setBlogs] = blogsState
+    const blogsWithoutBlog = blogs.filter(b => b.id !== id)
+
+    const blogsWithUpdatedBlog = blogsWithoutBlog.concat(updatedBlog)
+    setBlogs(blogsWithUpdatedBlog)
+  }
+  catch(err) {
+    console.log(err)
+  }
+}
+
+const Blog = ({ blog, blogsState }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => setVisible(!visible)
@@ -14,7 +44,7 @@ const Blog = ({blog}) => {
         {blog.url}
         <br />
         likes {blog.likes}
-        <button>like</button>
+        <button onClick={like(blog, blogsState)}>like</button>
         <br />
         {blog.user.name}
         <br />

@@ -1,5 +1,6 @@
 import blogService from '../services/blogs'
 import notificationSetter from '../utils/notificationSetter'
+import populateBlog from '../utils/populateBlog'
 
 const handleChange = (setter) => (event) => setter(event.target.value)
 
@@ -36,7 +37,8 @@ const handleClick = ({ blogsState, notificationState, ...blogState }, blogFormRe
   event.preventDefault()
   const setNotification = notificationSetter(notificationState)
   try {
-    const blog = await postBlog(blogData)
+    const blogResponse = await postBlog(blogData)
+    const blog = await populateBlog(blogResponse)
     addBlog(blogsState, blog)
     setNotification('notificationSuccess', `added blog '${blog.title}'`)
     blogFormRef.current.toggleVisibility()
