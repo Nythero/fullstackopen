@@ -2,6 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import populateBlog from '../utils/populateBlog'
 import DeleteBlogButton from './DeleteBlogButton'
+import PropTypes from 'prop-types'
 
 const blogDataFrom = async (blog) => {
   const { title, author, url, likes, user } = blog
@@ -31,7 +32,7 @@ const like = (blog, blogsState) => async () => {
   }
 }
 
-const Blog = ({ blog, blogsState, user }) => {
+const Blog = ({ blog, blogsState, user, lapepa }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => setVisible(!visible)
@@ -59,6 +60,28 @@ const Blog = ({ blog, blogsState, user }) => {
       <button onClick={toggleVisibility}>view</button>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.shape({ 
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string,
+    user: PropTypes.shape({
+      id: PropTypes.any.isRequired,
+      username: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      blogs: PropTypes.array.isRequired
+    }),
+    id: PropTypes.any.isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    token: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired,
+  blogsState: PropTypes.array.isRequired,
+  lapepa: PropTypes.string.isRequired
 }
 
 export default Blog
