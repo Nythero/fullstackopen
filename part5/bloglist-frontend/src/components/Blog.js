@@ -32,7 +32,7 @@ const like = (blog, blogsState) => async () => {
   }
 }
 
-const Blog = ({ blog, blogsState, user, lapepa }) => {
+const Blog = ({ blog, blogsState, user }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => setVisible(!visible)
@@ -63,7 +63,7 @@ const Blog = ({ blog, blogsState, user, lapepa }) => {
 }
 
 Blog.propTypes = {
-  blog: PropTypes.shape({ 
+  blog: PropTypes.shape({
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     url: PropTypes.string,
@@ -80,8 +80,7 @@ Blog.propTypes = {
     username: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired
   }).isRequired,
-  blogsState: PropTypes.array.isRequired,
-  lapepa: PropTypes.string.isRequired
+  blogsState: PropTypes.array.isRequired
 }
 
 export default Blog

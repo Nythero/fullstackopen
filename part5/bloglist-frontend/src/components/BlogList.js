@@ -1,9 +1,5 @@
 import Blog from './Blog'
 
-const blogComponent = (blogsState, user) => blog => {
-  return <Blog key={blog.id} blog={blog} blogsState={blogsState} user={user}/>
-}
-
 const sortingBlogsFunction = (b1, b2) => {
   if(b1.likes > b2.likes)
     return -1
@@ -15,6 +11,7 @@ const sortingBlogsFunction = (b1, b2) => {
 
 const BlogList = ({ blogsState, user }) => {
   const [blogs] = blogsState
+  const blogComponent = blog => <Blog key={blog.id} blog={blog} blogsState={blogsState} user={user}/>
   const sortedBlogs = blogs.sort(sortingBlogsFunction)
   return sortedBlogs.map(blogComponent(blogsState, user))
 }

@@ -25,7 +25,7 @@ const handleClick = (usernameState, passwordState, setUser, notificationState) =
     }
     else {
       console.log(err)
-      setNotification('notificationError', `couldn't login, try again later`)
+      setNotification('notificationError', 'couldn\'t login, try again later')
     }
   }
   finally {
@@ -49,7 +49,7 @@ const LoginForm = ({ usernameState, passwordState, setUser, notificationState })
         <input value={password} onChange={handleChange(setPassword)} type='password'>
         </input>
         <br />
-        <button 
+        <button
           onClick={handleClick(usernameState, passwordState, setUser, notificationState)}>
           Login
         </button>

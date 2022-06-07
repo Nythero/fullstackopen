@@ -11,7 +11,7 @@ const Toggable = forwardRef((props, refs) => {
 
   const showWhenVisible = { display: visible? '' : 'none' }
   const hideWhenVisible = { display: visible? 'none' : '' }
-  
+
   return (
     <div>
       <div style={hideWhenVisible} >
@@ -28,5 +28,7 @@ const Toggable = forwardRef((props, refs) => {
     </div>
   )
 })
+
+Toggable.displayName = 'Toggable'
 
 export default Toggable

@@ -9,7 +9,7 @@ const postBlog = async (blogData) => {
   return response.data
 }
 
-const addBlog = (blogsState, blog) => { 
+const addBlog = (blogsState, blog) => {
   const [blogs, setBlogs] = blogsState
   setBlogs(blogs.concat(blog))
 }
@@ -51,7 +51,7 @@ const handleClick = ({ blogsState, notificationState, ...blogState }, blogFormRe
     }
     else {
       console.log(err)
-      setNotification('notificationError', `couldn't add the blog, try again later`)
+      setNotification('notificationError', 'couldn\'t add the blog, try again later')
     }
   }
   resetBlogState(blogState)

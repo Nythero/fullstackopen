@@ -34,7 +34,7 @@ const App = () => {
   if(user !== null) {
     return (
       <>
-        <Blogs 
+        <Blogs
           blogsState={blogsState}
           user={user}
           titleState={titleState}
@@ -45,7 +45,7 @@ const App = () => {
       </>
     )
   }
-  return <LoginForm 
+  return <LoginForm
     usernameState={usernameState}
     passwordState={passwordState}
     setUser={setUser}
