@@ -4,6 +4,9 @@ import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
 
+let handleLikeClick = jest.fn()
+let handleDeleteClick = jest.fn()
+
 beforeEach(() => {
   const blogUser = {
     id: 0,
@@ -26,7 +29,12 @@ beforeEach(() => {
     name: 'name'
   }
   
-  render(<Blog blog={blog} blogsState={blogsState} user={user}/>)
+  render(<Blog 
+    blog={blog}
+    blogsState={blogsState}
+    user={user}
+    handleLikeClick={handleLikeClick}
+    handleDeleteClick={handleDeleteClick}/>)
 })
 
 test('renders title and author but not the details', () => {
@@ -49,4 +57,19 @@ test('renders title and author and the details', async () => {
   await user.click(button)
 
   expect(div).toHaveTextContent(/^.*url.*likes 0.*name.*$/)
+})
+
+test('like button works', async () => {
+  const regexp = /^.*title - author.*$/
+  const div = screen.getByText(regexp)
+  const showButton = screen.getByRole('button')
+  const user = userEvent.setup()  
+
+  await user.click(showButton)
+
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(handleLikeClick.mock.calls).toHaveLength(2)
 })
