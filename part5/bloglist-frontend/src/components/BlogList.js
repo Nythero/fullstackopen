@@ -1,4 +1,6 @@
 import Blog from './Blog'
+import populateBlog from '../utils/populateBlog'
+import blogService from '../services/blogs'
 
 const sortingBlogsFunction = (b1, b2) => {
   if(b1.likes > b2.likes)
@@ -7,6 +9,17 @@ const sortingBlogsFunction = (b1, b2) => {
     return 1
   else
     return 0
+}
+
+const blogDataFrom = async (blog) => {
+  const { title, author, url, likes, user } = blog
+  return {
+    title,
+    author,
+    url,
+    likes: likes + 1,
+    user: user.id
+  }
 }
 
 const handleLikeClick = (blog, blogsState) => async () => {
@@ -43,12 +56,13 @@ const handleDeleteClick = (blog, blogsState) => async () => {
 
 const BlogList = ({ blogsState, user }) => {
   const [blogs] = blogsState
-  const blogComponent = blog => <Blog 
+  const blogComponent = blog => <Blog
+    blog={blog}
     key={blog.id}
     handleLikeClick={handleLikeClick(blog, blogsState)}
     handleDeleteClick={handleDeleteClick(blog, blogsState)}
     user={user}/>
-  
+
   const sortedBlogs = blogs.sort(sortingBlogsFunction)
   return sortedBlogs.map(blogComponent)
 }

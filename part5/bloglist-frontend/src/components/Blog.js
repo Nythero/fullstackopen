@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
-import populateBlog from '../utils/populateBlog'
 import DeleteBlogButton from './DeleteBlogButton'
 import PropTypes from 'prop-types'
 
@@ -22,7 +20,10 @@ const Blog = ({ blog, user, handleLikeClick, handleDeleteClick }) => {
         <br />
         {blog.user.name}
         <br />
-        <DeleteBlogButton blog={blog} user={user} blogsState={handleDeleteClick} />
+        <DeleteBlogButton
+          blog={blog}
+          user={user}
+          handleDeleteClick={handleDeleteClick} />
       </div>
     )
   }
@@ -42,8 +43,7 @@ Blog.propTypes = {
     user: PropTypes.shape({
       id: PropTypes.any.isRequired,
       username: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      blogs: PropTypes.array.isRequired
+      name: PropTypes.string.isRequired
     }),
     id: PropTypes.any.isRequired
   }).isRequired,
@@ -52,7 +52,6 @@ Blog.propTypes = {
     username: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired
   }).isRequired,
-  blogsState: PropTypes.array.isRequired,
   handleLikeClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired
 }

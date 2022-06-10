@@ -1,12 +1,12 @@
 import userService from '../services/users'
 
 const parsedUser = (user) => {
-  const { blogs } = user
-  const parsedBlogs = blogs.map(b => b.id)
-  return {
-    blogs: parsedBlogs,
-    ...user
+  const pUser = {
+    username: user.username,
+    name: user.name,
+    id: user.id
   }
+  return pUser
 }
 
 const populateBlog = async (blog) => {

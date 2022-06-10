@@ -1,10 +1,9 @@
-const NotificationMessage = ({ notificationState }) => {
-  const [notificationMessage] = notificationState
-  if(notificationMessage === null)
+const NotificationMessage = (notification) => {
+  if(notification === null)
     return null
   return(
-    <div className={notificationMessage.type}>
-      {notificationMessage.message}
+    <div className={notification.type}>
+      {notification.message}
     </div>
   )
 }

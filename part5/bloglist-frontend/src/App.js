@@ -9,9 +9,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const usernameState = useState('')
   const passwordState = useState('')
-  const titleState = useState('')
-  const authorState = useState('')
-  const urlState = useState('')
   const notificationState = useState(null)
 
   const setBlogs = blogsState[1]
@@ -37,9 +34,6 @@ const App = () => {
         <Blogs
           blogsState={blogsState}
           user={user}
-          titleState={titleState}
-          authorState={authorState}
-          urlState={urlState}
           notificationState={notificationState} />
         <Logout setUser={setUser} notificationState={notificationState} />
       </>
