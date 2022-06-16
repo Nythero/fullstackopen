@@ -2,6 +2,7 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import notificationSetter from '../utils/notificationSetter'
 import NotificationMessage from './NotificationMessage'
+import { useState } from 'react'
 
 const handleChange = (setter) => (event) => setter(event.target.value)
 
@@ -34,22 +35,25 @@ const handleClick = (usernameState, passwordState, setUser, notificationState) =
   }
 }
 
-const LoginForm = ({ usernameState, passwordState, setUser, notificationState }) => {
+const LoginForm = ({ setUser, notificationState }) => {
+  const usernameState = useState('')
+  const passwordState = useState('')
   const [username, setUsername] = usernameState
   const [password, setPassword] = passwordState
+  const notification = notificationState[0]
   return (
     <div>
-      <NotificationMessage notificationState={notificationState} />
+      <NotificationMessage notification={notification} />
       <form>
         <label>Username</label>
-        <input value={username} onChange={handleChange(setUsername)} >
+        <input id='username' value={username} onChange={handleChange(setUsername)} >
         </input>
         <br />
         <label>Password</label>
-        <input value={password} onChange={handleChange(setPassword)} type='password'>
+        <input id='password' value={password} onChange={handleChange(setPassword)} type='password'>
         </input>
         <br />
-        <button
+        <button id='login-button'
           onClick={handleClick(usernameState, passwordState, setUser, notificationState)}>
           Login
         </button>

@@ -7,8 +7,6 @@ import Logout from './components/Logout'
 const App = () => {
   const blogsState = useState([])
   const [user, setUser] = useState(null)
-  const usernameState = useState('')
-  const passwordState = useState('')
   const notificationState = useState(null)
 
   const setBlogs = blogsState[1]
@@ -40,8 +38,6 @@ const App = () => {
     )
   }
   return <LoginForm
-    usernameState={usernameState}
-    passwordState={passwordState}
     setUser={setUser}
     notificationState={notificationState} />
 }

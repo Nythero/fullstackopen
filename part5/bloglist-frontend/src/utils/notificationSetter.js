@@ -3,6 +3,7 @@ let timeoutId
 const notificationSetter = (notificationState) => {
   const setNotification = notificationState[1]
   const f = (type, message) => {
+    console.log('puede ser pa')
     const notification = { type, message }
     setNotification(notification)
 
