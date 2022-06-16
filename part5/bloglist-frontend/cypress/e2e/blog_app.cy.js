@@ -1,5 +1,5 @@
-describe('blog app', () => {
-  beforeEach(() => {
+describe('blog app', function() {
+  beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
 
     const user = {
@@ -12,14 +12,14 @@ describe('blog app', () => {
     cy.visit('http://localhost:3000')
   })
 
-  it('Login form is shown', () => {
+  it('Login form is shown', function() {
     cy.contains('Username')
     cy.contains('Password')
     cy.contains('Login')
   })
 
-  describe('Login', () => {
-    it('Succeeds with valid credentials', () => {
+  describe('Login', function() {
+    it('Succeeds with valid credentials', function() {
       cy.get('#username').type('username')
       cy.get('#password').type('password')
       cy.get('#login-button').click()
@@ -28,7 +28,7 @@ describe('blog app', () => {
       cy.get('.notificationSuccess').contains('logged in as username')
     })
 
-    it('Fails with wrong credentials', () => {
+    it('Fails with wrong credentials', function() {
       cy.get('#username').type('username2')
       cy.get('#password').type('password2')
       cy.get('#login-button').click()
@@ -38,4 +38,46 @@ describe('blog app', () => {
     })
   })
 
+  describe('when logged in', function() {
+    beforeEach(function() {
+      const credentials = {
+	username: 'username',
+	password: 'password'
+      }
+      cy.request('POST', 'http://localhost:3003/api/login', credentials)
+        .then(response => {
+          const jwt = JSON.stringify(response.body)
+	  localStorage.setItem('loggedBlogUser', jwt)
+	  cy.visit('http://localhost:3000')
+	})
+    }) 
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title-input').type('title')
+      cy.get('#author-input').type('author')
+      cy.get('#url-input').type('url')
+      cy.contains('create').click()
+
+      cy.get('.notificationSuccess').contains('added blog \'title\'')
+      cy.contains('title - author')
+    })
+
+    describe('when there is a blog', function() {
+      beforeEach(function() {
+        cy.contains('new blog').click()
+        cy.get('#title-input').type('title')
+        cy.get('#author-input').type('author')
+        cy.get('#url-input').type('url')
+        cy.contains('create').click()
+      })
+
+      it('A blog can be liked', function () {
+        cy.contains('title - author').contains('view').click()
+        cy.contains('likes').contains('like').click()
+
+        cy.contains('likes').contains('1')
+      })
+    })
+  })
 })

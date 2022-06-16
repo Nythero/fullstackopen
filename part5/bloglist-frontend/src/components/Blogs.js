@@ -5,6 +5,7 @@ import Toggable from './Toggable'
 import { useRef } from 'react'
 import blogService from '../services/blogs'
 import populateBlog from '../utils/populateBlog'
+import notificationSetter from '../utils/notificationSetter'
 
 const postBlog = async (blogData) => {
   const response = await blogService.post(blogData)
@@ -23,38 +24,29 @@ const addBlogInsecure = async (blogData, blogsState) => {
   return blog
 }
 
-const notificationMessage = (type, message) => {
-  return {
-    type,
-    message
-  }
-}
-
 const handleAddError = (err, setNotification) => {
   if(err.name === 'AxiosError') {
     const response = err.response
     console.log(response.status, response.data)
-    const message = notificationMessage('notificationError', response.data.error)
-    setNotification(message)
+    setNotification('notificationError', response.data.error)
   }
   else {
     console.log(err)
-    const message = notificationMessage(
+    setNotification(
       'notificationError',
       'couldn\'t add the blog, try again later')
-    setNotification(message)
   }
 }
 
 const Blogs = ({ user, blogsState, notificationState }) => {
   const blogFormRef = useRef()
-  const [notification, setNotification] = notificationState
+  const setNotification = notificationSetter(notificationState)
+  const notification = notificationState[0]
 
   const addBlog = async (blogData) => {
     try {
       const blog = await addBlogInsecure(blogData, blogsState)
-      const message = notificationMessage('notificationSuccess', `added blog '${blog.title}'`)
-      setNotification(message)
+      setNotification('notificationSuccess', `added blog '${blog.title}'`)
     }
     catch (err) {
       handleAddError(err, setNotification)
@@ -66,7 +58,7 @@ const Blogs = ({ user, blogsState, notificationState }) => {
       <h2>blogs</h2>
       <NotificationMessage notification={notification}/>
       <p>{user.name} logged in</p>
-      <Toggable ref={blogFormRef}>
+      <Toggable ref={blogFormRef} openText='new blog' closeText='cancel'>
         <BlogForm
           addBlog={addBlog}
           blogFormRef={blogFormRef}/>
