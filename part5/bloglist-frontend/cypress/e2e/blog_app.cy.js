@@ -41,16 +41,16 @@ describe('blog app', function() {
   describe('when logged in', function() {
     beforeEach(function() {
       const credentials = {
-	username: 'username',
-	password: 'password'
+        username: 'username',
+        password: 'password'
       }
       cy.request('POST', 'http://localhost:3003/api/login', credentials)
         .then(response => {
           const jwt = JSON.stringify(response.body)
-	  localStorage.setItem('loggedBlogUser', jwt)
-	  cy.visit('http://localhost:3000')
-	})
-    }) 
+          localStorage.setItem('loggedBlogUser', jwt)
+          cy.visit('http://localhost:3000')
+        })
+    })
 
     it('A blog can be created', function() {
       cy.contains('new blog').click()
@@ -65,12 +65,12 @@ describe('blog app', function() {
 
     describe('when there is a blog', function() {
       beforeEach(function() {
-	const blogData = {
-	  title: 'title',
-	  author: 'author',
-	  url: 'url'
-	}
-	cy.createBlog(blogData)
+        const blogData = {
+          title: 'title',
+          author: 'author',
+          url: 'url'
+        }
+        cy.createBlog(blogData)
       })
 
       it('A blog can be liked', function () {
@@ -82,7 +82,7 @@ describe('blog app', function() {
 
       it('A blog can be deleted by the user who created it', function() {
         cy.contains('title - author').contains('view').click()
-	cy.contains('remove').click()
+        cy.contains('remove').click()
 
         cy.get('html').should('not.contain', 'title - author')
       })
@@ -94,52 +94,52 @@ describe('blog app', function() {
           password: 'password2'
         }
         cy.request('POST', 'http://localhost:3003/api/users', user)
-	cy.contains('Logout').click()
-	
+        cy.contains('Logout').click()
+
         const credentials = {
-  	username: 'username2',
-  	password: 'password2'
+          username: 'username2',
+          password: 'password2'
         }
         cy.request('POST', 'http://localhost:3003/api/login', credentials)
           .then(response => {
             const jwt = JSON.stringify(response.body)
-  	  localStorage.setItem('loggedBlogUser', jwt)
-  	  cy.visit('http://localhost:3000')
-  	})
+            localStorage.setItem('loggedBlogUser', jwt)
+            cy.visit('http://localhost:3000')
+          })
 
         cy.contains('title - author').contains('view').click()
-	cy.contains('title - author').should('not.contain', 'remove')
+        cy.contains('title - author').should('not.contain', 'remove')
       })
 
       it('Blogs are ordered by most likes', function() {
         const blogData2 = {
-	  title: 'title2',
-	  author: 'author2',
-	  url: 'url2'
-	}
-	const blogData3 = {
-	  title: 'title3',
-	  author: 'author3',
-	  url: 'url3'
-	}
-	cy.createBlog(blogData2)
-	cy.createBlog(blogData3)
+          title: 'title2',
+          author: 'author2',
+          url: 'url2'
+        }
+        const blogData3 = {
+          title: 'title3',
+          author: 'author3',
+          url: 'url3'
+        }
+        cy.createBlog(blogData2)
+        cy.createBlog(blogData3)
 
         cy.likeBlog({ title: 'title', author: 'author', likes: 0 })
-	
-	cy.likeBlog({ ...blogData2, likes: 0 })
-	cy.likeBlog({ ...blogData2, likes: 1 })
-	//This is needed because in my setup blog title3 randomly dissapears
-	cy.visit('http://localhost:3000')
-        cy.likeBlog({ ...blogData3, likes: 0 })
-	cy.likeBlog({ ...blogData3, likes: 1 })
-	cy.likeBlog({ ...blogData3, likes: 2 })
 
-	//The .get('html') is needed because otherwise starts searching from title2
-	//Only happens when running all the tests
+        cy.likeBlog({ ...blogData2, likes: 0 })
+        cy.likeBlog({ ...blogData2, likes: 1 })
+        //This is needed because in my setup blog title3 randomly dissapears
+        cy.visit('http://localhost:3000')
+        cy.likeBlog({ ...blogData3, likes: 0 })
+        cy.likeBlog({ ...blogData3, likes: 1 })
+        cy.likeBlog({ ...blogData3, likes: 2 })
+
+        //The .get('html') is needed because otherwise starts searching from title2
+        //Only happens when running all the tests
         cy.get('html').get('.blog').eq(0).should('contain', 'title3 - author3')
         cy.get('html').get('.blog').eq(1).should('contain', 'title2 - author2')
-	cy.get('html').get('.blog').eq(2).should('contain', 'title - author')
+        cy.get('html').get('.blog').eq(2).should('contain', 'title - author')
       })
 
     })

@@ -28,8 +28,8 @@ beforeEach(() => {
     username: 'username',
     name: 'name'
   }
-  
-  render(<Blog 
+
+  render(<Blog
     blog={blog}
     blogsState={blogsState}
     user={user}
@@ -52,7 +52,7 @@ test('renders title and author and the details', async () => {
   const regexp = /^.*title - author.*$/
   const div = screen.getByText(regexp)
   const button = screen.getByRole('button')
-  const user = userEvent.setup()  
+  const user = userEvent.setup()
 
   await user.click(button)
 
@@ -60,8 +60,6 @@ test('renders title and author and the details', async () => {
 })
 
 test('like button works', async () => {
-  const regexp = /^.*title - author.*$/
-  const div = screen.getByText(regexp)
   const showButton = screen.getByRole('button')
   const user = userEvent.setup()
 
