@@ -26,6 +26,13 @@ export const vote = (id) => {
   }
 }
 
+export const newAnecdote = (content) => {
+  return {
+    type: 'NEW',
+    data: { content }
+  }
+}
+
 const withOneMoreVote = (anecdote) => {
   const newAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
   return newAnecdote
@@ -36,6 +43,9 @@ const reducer = (state = initialState, action) => {
     case 'VOTE':
       const { id } = action.data
       return state.map(a => (a.id === id)? withOneMoreVote(a) : a)
+    case 'NEW':
+      const { content } = action.data
+      return state.concat(asObject(content))
     default:
       return state
   }
