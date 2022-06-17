@@ -23,3 +23,22 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('createBlog', ({ title, author, url }) => {
+  cy.contains('new blog').click()
+  cy.get('#title-input').type(title)
+  cy.get('#author-input').type(author)
+  cy.get('#url-input').type(url)
+  cy.contains('create').click()
+  cy.contains('title - author')
+})
+
+Cypress.Commands.add('likeBlog', ({ title, author, likes }) => {
+  const blog = title + ' - ' + author
+  const newLikes = likes + 1
+  cy.contains(blog).contains('view').click()
+  cy.contains(blog).contains('likes').contains('like').click()
+  cy.contains(blog).contains('likes ' + newLikes)
+  cy.contains(blog).contains('hide').click()
+  cy.contains(blog).contains('view')
+})

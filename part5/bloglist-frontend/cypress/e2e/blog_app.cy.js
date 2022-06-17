@@ -65,11 +65,12 @@ describe('blog app', function() {
 
     describe('when there is a blog', function() {
       beforeEach(function() {
-        cy.contains('new blog').click()
-        cy.get('#title-input').type('title')
-        cy.get('#author-input').type('author')
-        cy.get('#url-input').type('url')
-        cy.contains('create').click()
+	const blogData = {
+	  title: 'title',
+	  author: 'author',
+	  url: 'url'
+	}
+	cy.createBlog(blogData)
       })
 
       it('A blog can be liked', function () {
@@ -109,6 +110,38 @@ describe('blog app', function() {
         cy.contains('title - author').contains('view').click()
 	cy.contains('title - author').should('not.contain', 'remove')
       })
+
+      it('Blogs are ordered by most likes', function() {
+        const blogData2 = {
+	  title: 'title2',
+	  author: 'author2',
+	  url: 'url2'
+	}
+	const blogData3 = {
+	  title: 'title3',
+	  author: 'author3',
+	  url: 'url3'
+	}
+	cy.createBlog(blogData2)
+	cy.createBlog(blogData3)
+
+        cy.likeBlog({ title: 'title', author: 'author', likes: 0 })
+	
+	cy.likeBlog({ ...blogData2, likes: 0 })
+	cy.likeBlog({ ...blogData2, likes: 1 })
+	//This is needed because in my setup blog title3 randomly dissapears
+	cy.visit('http://localhost:3000')
+        cy.likeBlog({ ...blogData3, likes: 0 })
+	cy.likeBlog({ ...blogData3, likes: 1 })
+	cy.likeBlog({ ...blogData3, likes: 2 })
+
+	//The .get('html') is needed because otherwise starts searching from title2
+	//Only happens when running all the tests
+        cy.get('html').get('.blog').eq(0).should('contain', 'title3 - author3')
+        cy.get('html').get('.blog').eq(1).should('contain', 'title2 - author2')
+	cy.get('html').get('.blog').eq(2).should('contain', 'title - author')
+      })
+
     })
   })
 })
