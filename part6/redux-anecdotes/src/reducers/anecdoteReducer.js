@@ -26,19 +26,6 @@ const withOneMoreVote = (anecdote) => {
   return newAnecdote
 }
 
-const reducer = (state = initialState, action) => {
-  switch(action.type) {
-    case 'VOTE':
-      const { id } = action.data
-      return state.map(a => (a.id === id)? withOneMoreVote(a) : a)
-    case 'NEW':
-      const { content } = action.data
-      return state.concat(asObject(content))
-    default:
-      return state
-  }
-}
-
 const anecdoteSlice = createSlice({
   name: 'anecdote',
   initialState,
