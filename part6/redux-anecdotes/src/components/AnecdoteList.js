@@ -11,9 +11,15 @@ const sortingFunction = (a1, a2) => {
     return 0
 }
 
+const sortedByVotes = (anecdotes) => [...anecdotes].sort(sortingFunction)
+
+const doesAnecdoteInclude = (string) => (anecdote) => anecdote.content.includes(string)
+
 const AnecdoteList = ({ voteAnecdote }) => {
   const anecdotes = useSelector(state => state.anecdotes)
-  return [...anecdotes].sort(sortingFunction).map(anecdote =>
+  const filter = useSelector(state=> state.filter)
+
+  const componentMapping = anecdote =>
     <div key={anecdote.id}>
       <div>
         {anecdote.content}
@@ -23,7 +29,8 @@ const AnecdoteList = ({ voteAnecdote }) => {
         <button onClick={voteAnecdote(anecdote)}>vote</button>
       </div>
     </div>
-  )
+
+  return sortedByVotes(anecdotes).filter(doesAnecdoteInclude(filter)).map(componentMapping)
 }
 
 export default AnecdoteList
