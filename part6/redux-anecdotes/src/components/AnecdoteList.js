@@ -12,7 +12,7 @@ const sortingFunction = (a1, a2) => {
 }
 
 const AnecdoteList = ({ voteAnecdote }) => {
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(state => state.anecdotes)
   return [...anecdotes].sort(sortingFunction).map(anecdote =>
     <div key={anecdote.id}>
       <div>
