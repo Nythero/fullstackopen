@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import Anecdote from './Anecdote'
 
 const isMoreVoted = (a1, a2) => a1.votes > a2.votes
 
@@ -19,16 +20,10 @@ const AnecdoteList = ({ voteAnecdote }) => {
   const anecdotes = useSelector(state => state.anecdotes)
   const filter = useSelector(state=> state.filter)
 
-  const componentMapping = anecdote =>
-    <div key={anecdote.id}>
-      <div>
-        {anecdote.content}
-      </div>
-      <div>
-        has {anecdote.votes}
-        <button onClick={voteAnecdote(anecdote)}>vote</button>
-      </div>
-    </div>
+  const componentMapping = anecdote => <Anecdote 
+    key={anecdote.id}
+    anecdote={anecdote}
+    voteAnecdote={voteAnecdote}/>
 
   return sortedByVotes(anecdotes).filter(doesAnecdoteInclude(filter)).map(componentMapping)
 }
