@@ -1,13 +1,23 @@
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { vote, newAnecdote } from './reducers/anecdoteReducer'
+import { vote, newAnecdote, set } from './reducers/anecdoteReducer'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Notification from './components/Notification'
 import Filter from './components/Filter'
 import { notify, clear } from './reducers/notificationReducer'
+import anecdotesService from './services/anecdotes'
 
 const App = () => {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    const effect = async () => {
+      const anecdotes = await anecdotesService.getAll()
+      dispatch(set(anecdotes))
+    }
+    effect()
+  }, [dispatch])
 
   const showNotification = (notification) => {
     dispatch(notify(notification))
