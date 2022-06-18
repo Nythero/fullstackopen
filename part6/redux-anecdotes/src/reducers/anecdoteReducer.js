@@ -26,8 +26,8 @@ const anecdoteSlice = createSlice({
       return state.map(a => (a.id === id)? withOneMoreVote(a) : a)    
     },
     newAnecdote(state, action) {
-      const content = action.payload
-      return state.concat(asObject(content))    
+      const anecdote = action.payload
+      return state.concat(anecdote)    
     },
     set(state, action) {
       return action.payload

@@ -8,6 +8,14 @@ import Filter from './components/Filter'
 import { notify, clear } from './reducers/notificationReducer'
 import anecdotesService from './services/anecdotes'
 
+const anecdoteData = (content) => {
+  const data = {
+    content,
+    votes: 0
+  }
+  return data
+}
+
 const App = () => {
   const dispatch = useDispatch()
 
@@ -24,11 +32,12 @@ const App = () => {
     setTimeout(() => dispatch(clear()), 5000)
   }
 
-  const addAnecdote = (event) => {
+  const addAnecdote = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    dispatch(newAnecdote(content))
+    const anecdote = await anecdotesService.post(anecdoteData(content))
+    dispatch(newAnecdote(anecdote))
     showNotification(`Added new anecdote: ${content}`)
   }
 
