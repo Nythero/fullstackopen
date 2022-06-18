@@ -16,14 +16,14 @@ const sortedByVotes = (anecdotes) => [...anecdotes].sort(sortingFunction)
 
 const doesAnecdoteInclude = (string) => (anecdote) => anecdote.content.includes(string)
 
-const AnecdoteList = ({ voteAnecdote }) => {
+const AnecdoteList = ({ vote }) => {
   const anecdotes = useSelector(state => state.anecdotes)
   const filter = useSelector(state=> state.filter)
 
   const componentMapping = anecdote => <Anecdote 
     key={anecdote.id}
     anecdote={anecdote}
-    voteAnecdote={voteAnecdote}/>
+    vote={vote}/>
 
   return sortedByVotes(anecdotes).filter(doesAnecdoteInclude(filter)).map(componentMapping)
 }

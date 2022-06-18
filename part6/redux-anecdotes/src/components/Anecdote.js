@@ -1,4 +1,4 @@
-const Anecdote = ({ anecdote, voteAnecdote }) => {
+const Anecdote = ({ anecdote, vote }) => {
   return (
     <div>
       <div>
@@ -6,7 +6,7 @@ const Anecdote = ({ anecdote, voteAnecdote }) => {
       </div>
       <div>
         has {anecdote.votes}
-        <button onClick={voteAnecdote(anecdote)}>vote</button>
+        <button onClick={vote(anecdote)}>vote</button>
       </div>
     </div>
   )

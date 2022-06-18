@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { vote, initiliazeAnecdotes, createAnecdote } from './reducers/anecdoteReducer'
+import { initiliazeAnecdotes, createAnecdote, voteAnecdote } from './reducers/anecdoteReducer'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Notification from './components/Notification'
@@ -27,8 +27,8 @@ const App = () => {
     showNotification(`Added new anecdote: ${content}`)
   }
 
-  const voteAnecdote = (anecdote) => () => {
-    dispatch(vote(anecdote.id))
+  const vote = (anecdote) => () => {
+    dispatch(voteAnecdote(anecdote))
     showNotification(`You voted '${anecdote.content}'`)
   }
   
@@ -37,7 +37,7 @@ const App = () => {
       <Notification />     
       <h2>Anecdotes</h2>
       <Filter />
-      <AnecdoteList voteAnecdote={voteAnecdote}/>
+      <AnecdoteList vote={vote}/>
       <AnecdoteForm addAnecdote={addAnecdote}/>
     </div>
   )
