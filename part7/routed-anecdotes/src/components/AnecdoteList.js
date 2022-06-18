@@ -6,9 +6,13 @@ const AnecdoteList = ({ anecdotes }) => (
     <ul>
       {anecdotes.map(anecdote => {
         const link = `/anecdotes/${anecdote.id}`
-        return <Link key={anecdote.id} to={link}>
-          {anecdote.content}
-        </Link>
+        return (
+          <li key={anecdote.id}>
+            <Link to={link}>
+              {anecdote.content}
+            </Link>
+          </li>
+	)
       })}
     </ul>
   </div>
