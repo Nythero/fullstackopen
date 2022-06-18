@@ -5,7 +5,7 @@ import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Notification from './components/Notification'
 import Filter from './components/Filter'
-import { notify, clear } from './reducers/notificationReducer'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -14,22 +14,17 @@ const App = () => {
     dispatch(initiliazeAnecdotes())
   }, [dispatch])
 
-  const showNotification = (notification) => {
-    dispatch(notify(notification))
-    setTimeout(() => dispatch(clear()), 5000)
-  }
-
   const addAnecdote = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     dispatch(createAnecdote(content))
-    showNotification(`Added new anecdote: ${content}`)
+    dispatch(setNotification(`Added new anecdote: ${content}`, 5))
   }
 
   const vote = (anecdote) => () => {
     dispatch(voteAnecdote(anecdote))
-    showNotification(`You voted '${anecdote.content}'`)
+    dispatch(setNotification(`You voted '${anecdote.content}'`, 5))
   }
   
   return (
