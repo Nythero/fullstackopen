@@ -17,11 +17,14 @@ const notificationSlice = createSlice({
 
 export const { notify, clear } = notificationSlice.actions
 
+let timeout
+
 export const setNotification = (notification, time) => {
   return dispatch => {
     const timeInMs = time * 1000
     dispatch(notify(notification))
-    setTimeout(() => dispatch(clear()), timeInMs)
+    clearTimeout(timeout)
+    timeout = setTimeout(() => dispatch(clear()), timeInMs)
   }
 }
 
