@@ -5,7 +5,7 @@ import { commentBlog } from '../reducers/blogsReducer'
 
 const commentLiMap = (comment) => {
   return (
-    <li key={comment}>
+    <li className='text-light list-group-item bg-secondary' key={comment}>
       {comment}
     </li>
   )
@@ -21,12 +21,12 @@ const Comments = ({ blog }) => {
   }
   return (
     <>
-      <h3>comments</h3>
+      <h3 className='text-light'>comments</h3>
       <form onSubmit={handleSubmit}>
-        <InputField name='comment' input={comment} />
-        <button>add comment</button>
+        <InputField className='form-control' name='comment' input={comment} />
+        <button className='btn btn-dark btn-outline-light my-3'>add comment</button>
       </form>
-      <ul>
+      <ul className='list-group'>
         {blog.comments.map(commentLiMap)}
       </ul>
     </>

@@ -25,7 +25,7 @@ const BlogForm = ({ addBlog, blogFormRef }) => {
       <InputField name='title' input={title}/>
       <InputField name='author' input={author}/>
       <InputField name='url' input={url}/>
-      <button type='submit'>create</button>
+      <button className='btn btn-dark btn-outline-light my-3' type='submit'>create</button>
     </form>
   )
 }

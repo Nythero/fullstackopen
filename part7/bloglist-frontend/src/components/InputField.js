@@ -1,9 +1,8 @@
 const InputField = ({ name, input }) => {
   return (
     <>
-      <label htmlFor={`${name}-input`}>{name}</label>
-      <input id={`${name}-input`} {...input}></input>
-      <br />
+      <label className='form-label text-light' htmlFor={`${name}-input`}>{name}</label>
+      <input className='form-control w-25' id={`${name}-input`} {...input}></input>
     </>
   )
 }

@@ -34,9 +34,8 @@ const App = () => {
 
   if(user !== null) {
     return (
-      <>
+      <div className='container bg-secondary bg-opacity-50 vh-100 px-0'>
         <Menu />
-        <h2>blogs</h2>
         <NotificationMessage />
         <Routes>
           <Route path='/blogs/:id' element={
@@ -48,7 +47,7 @@ const App = () => {
           <Route path='/users' element={<Users />} />
           <Route path='/' element={<Blogs />} />
         </Routes>
-      </>
+      </div>
     )
   }
   return <LoginForm />

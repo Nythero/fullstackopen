@@ -41,7 +41,7 @@ export const loginUser = (username, password) => {
       dispatch(login(u))
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(u))
       const notification = {
-        type: 'notificationSuccess',
+        type: 'success',
         message: `logged in as ${username}`
       }
       dispatch(setNotification(notification, 5))
@@ -58,7 +58,7 @@ export const logoutUser = () => {
     blogService.setToken(null)
     window.localStorage.removeItem('loggedBlogUser')
     const notification = {
-      type: 'notificationSuccess',
+      type: 'success',
       message: 'logged out successfully'
     }
     dispatch(setNotification(notification, 5))

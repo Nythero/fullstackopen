@@ -6,12 +6,12 @@ const Menu = () => {
   const user = useSelector(state => state.user)
 
   return (
-    <div style={{ display: 'flex', flexDirection:'row' }}>
-      <Link to='/'>blogs</Link>
-      <Link to='/users'>users</Link>
-      <p>{user.name} logged in</p>
+    <nav className='navbar navbar-dark bg-dark justify-content-start'>
+      <Link className='nav-link link-light' to='/'>blogs</Link>
+      <Link className='nav-link link-light' to='/users'>users</Link>
+      <p className='navbar-text mb-0 px-3 text-light'>{user.name} logged in</p>
       <Logout />
-    </div>
+    </nav>
   )
 }
 

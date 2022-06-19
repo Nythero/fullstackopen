@@ -6,7 +6,8 @@ const Logout = () => {
   const logout = () => {
     dispatch(logoutUser())
   }
-  return <button onClick={logout}>Logout</button>
+  return <button className='btn btn-outline-light'
+    onClick={logout}>Logout</button>
 }
 
 export default Logout

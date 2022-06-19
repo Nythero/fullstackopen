@@ -46,7 +46,7 @@ export const addBlog = (blog) => {
       const populatedBlog = await populateBlog(newBlog)
       dispatch(add(populatedBlog))
       const notification = {
-        type:'notificationSuccess',
+        type:'success',
         message:`added blog '${populatedBlog.title}'`
       }
       dispatch(setNotification(notification, 5))
@@ -64,7 +64,7 @@ export const removeBlog = (blog) => {
       await blogService.remove(id)
       dispatch(remove(id))
       const notification = {
-        type:'notificationSuccess',
+        type:'success',
         message: `deleted blog ${blog.title}`
       }
       dispatch(setNotification(notification, 5))
@@ -83,7 +83,7 @@ export const likeBlog = (blog) => {
       const populatedBlog = await populateBlog(newBlog)
       dispatch(reeplace(populatedBlog))
       const notification = {
-        type:'notificationSuccess',
+        type:'success',
         message:`liked blog '${blogData.title}'`
       }
       dispatch(setNotification(notification, 5))
@@ -102,7 +102,7 @@ export const commentBlog = (blog, comment) => {
       const populatedBlog = await populateBlog(newBlog)
       dispatch(reeplace(populatedBlog))
       const notification = {
-        type:'notificationSuccess',
+        type:'success',
         message:`added comment ${comment}`
       }
       dispatch(setNotification(notification, 5))

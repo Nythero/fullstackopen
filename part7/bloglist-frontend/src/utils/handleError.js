@@ -5,7 +5,7 @@ const handleError = (err, alternativeMessage, dispatch) => {
     const response = err.response
     console.log(response.status, response.data)
     const notification = {
-      type: 'notificationError',
+      type: 'danger',
       message: response.data.error
     }
     dispatch(setNotification(notification, 5))
@@ -13,7 +13,7 @@ const handleError = (err, alternativeMessage, dispatch) => {
   else {
     console.log(err)
     const notification = {
-      type: 'notificationError',
+      type: 'danger',
       message: alternativeMessage
     }
     dispatch(setNotification(notification, 5))

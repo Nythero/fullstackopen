@@ -5,7 +5,7 @@ const NotificationMessage = () => {
   if(notification === null)
     return null
   return(
-    <div className={notification.type}>
+    <div className={`alert alert-${notification.type}`}>
       {notification.message}
     </div>
   )

@@ -14,7 +14,8 @@ const Blogs = () => {
   }
 
   return (
-    <div>
+    <div className='px-3'>
+      <h2 className='text-light'>blogs</h2>
       <Toggable ref={blogFormRef} openText='new blog' closeText='cancel'>
         <BlogForm
           addBlog={newBlog}

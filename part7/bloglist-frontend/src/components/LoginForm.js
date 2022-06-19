@@ -14,16 +14,17 @@ const LoginForm = () => {
     resetPassword()
   }
   return (
-    <div>
+    <div className="container">
       <NotificationMessage />
+      <h2 className='text-light'>Login</h2>
       <form onSubmit={handleSubmit}>
-        <label>Username</label>
-        <input id='username' {...username}></input>
+        <label className='form-label text-light'>Username</label>
+        <input className='form-control w-25' id='username' {...username}></input>
         <br />
-        <label>Password</label>
-        <input id='password' {...password}></input>
+        <label className='form-label text-light'>Password</label>
+        <input className='form-control w-25' id='password' {...password}></input>
         <br />
-        <button id='login-button'>Login</button>
+        <button className='btn btn-dark btn-outline-light' id='login-button'>Login</button>
       </form>
     </div>
   )

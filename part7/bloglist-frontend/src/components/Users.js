@@ -11,7 +11,7 @@ const usersRowMap = (user) => {
   return (
     <tr key={user.id}>
       <td>
-        <Link to={`/users/${user.id}`}>
+        <Link className='link link-light'to={`/users/${user.id}`}>
           {user.name}
         </Link>
       </td>
@@ -38,9 +38,9 @@ const Users = () => {
   const usersWithBlogs = usersNoRepeated.map(userWithBlogsQty)
 
   return (
-    <>
-      <h2>users</h2>
-      <table>
+    <div className='px-3'>
+      <h2 className='text-light'>users</h2>
+      <table className='table table-striped table-dark'>
         <tbody>
           <tr>
             <th></th>
@@ -49,7 +49,7 @@ const Users = () => {
           {usersWithBlogs.map(usersRowMap)}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }
 
