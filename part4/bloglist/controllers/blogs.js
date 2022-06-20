@@ -1,6 +1,9 @@
 const Router = require('express').Router()
 const Blog = require('../models/Blog.js')
 const { userExtractor } = require('../utils/middleware.js')
+const comments = require('./comments.js')
+
+Router.use('/:id/comments', comments)
 
 Router.get('/', async (request, response, next) => {
   try {
@@ -56,11 +59,11 @@ Router.delete('/:id', userExtractor, async (request, response, next) => {
 
 Router.put('/:id', async (request, response, next) => {
   const id = request.params.id
-  const blogData = {
-    likes: request.body.likes
-  }
 
   try {
+    const blogData = {
+      likes: request.body.likes
+    }
     const blog = await Blog.findByIdAndUpdate(id, blogData, {
       new: true
     })

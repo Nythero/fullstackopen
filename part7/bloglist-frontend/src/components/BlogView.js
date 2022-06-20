@@ -2,6 +2,14 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import DeleteBlogButton from './DeleteBlogButton'
 
+const commentLiMap = (comment) => {
+  return (
+    <li key={comment}>
+      {comment}
+    </li>
+  )
+}
+
 const BlogView = ({ handleLikeClick, handleDeleteClick }) => {
   const id = useParams().id
   const blogs = useSelector(state => state.blogs)
@@ -20,6 +28,10 @@ const BlogView = ({ handleLikeClick, handleDeleteClick }) => {
         <DeleteBlogButton
           blog={blog}
           handleDeleteClick={handleDeleteClick} />
+        <h3>comments</h3>
+        <ul>
+          {blog.comments.map(commentLiMap)}
+        </ul>
       </div>
     )
   }
