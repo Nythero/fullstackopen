@@ -1,35 +1,12 @@
-import { useState } from 'react'
-import DeleteBlogButton from './DeleteBlogButton'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
-const Blog = ({ blog, handleLikeClick, handleDeleteClick }) => {
-  const [visible, setVisible] = useState(false)
-
-  const toggleVisibility = () => setVisible(!visible)
-
-  if(visible) {
-    return (
-      <div>
-        {blog.title} - {blog.author}
-        <button onClick={toggleVisibility}>hide</button>
-        <br />
-        {blog.url}
-        <br />
-        likes {blog.likes}
-        <button onClick={handleLikeClick}>like</button>
-        <br />
-        {blog.user.name}
-        <br />
-        <DeleteBlogButton
-          blog={blog}
-          handleDeleteClick={handleDeleteClick} />
-      </div>
-    )
-  }
+const Blog = ({ blog }) => {
   return (
     <div className='blog'>
-      {blog.title} - {blog.author}
-      <button onClick={toggleVisibility}>view</button>
+      <Link to={`/blogs/${blog.id}`}>
+        {blog.title} - {blog.author}
+      </Link>
     </div>
   )
 }
@@ -45,9 +22,7 @@ Blog.propTypes = {
       name: PropTypes.string.isRequired
     }),
     id: PropTypes.any.isRequired
-  }).isRequired,
-  handleLikeClick: PropTypes.func.isRequired,
-  handleDeleteClick: PropTypes.func.isRequired
+  }).isRequired
 }
 
 export default Blog

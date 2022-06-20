@@ -1,6 +1,5 @@
 import Blog from './Blog'
-import { useSelector, useDispatch } from 'react-redux'
-import { removeBlog, likeBlog } from '../reducers/blogsReducer'
+import { useSelector/*, useDispatch*/ } from 'react-redux'
 
 const sortingBlogsFunction = (b1, b2) => {
   if(b1.likes > b2.likes)
@@ -12,24 +11,13 @@ const sortingBlogsFunction = (b1, b2) => {
 }
 
 const BlogList = () => {
-  const dispatch = useDispatch()
-
-  const handleDeleteClick = (blog) => async () => {
-    const id = blog.id
-    if(!window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
-      return
-    dispatch(removeBlog(id))
-  }
-  const handleLikeClick = (blog) => async () => {
-    dispatch(likeBlog(blog))
-  }
+  //const dispatch = useDispatch()
+  /**/
 
   const blogs = useSelector(state => state.blogs)
   const blogComponent = blog => <Blog
     blog={blog}
-    key={blog.id}
-    handleLikeClick={handleLikeClick(blog)}
-    handleDeleteClick={handleDeleteClick(blog)}/>
+    key={blog.id}/>
 
   const sortedBlogs = [...blogs].sort(sortingBlogsFunction)
   return sortedBlogs.map(blogComponent)
