@@ -1,4 +1,7 @@
-const DeleteBlogButton = ({ blog, user, handleDeleteClick }) => {
+import { useSelector } from 'react-redux'
+
+const DeleteBlogButton = ({ blog, handleDeleteClick }) => {
+  const user = useSelector(state => state.user)
   if(user === null)
     return null
   const blogCreatorUsername = blog.user.username

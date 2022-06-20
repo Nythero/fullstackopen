@@ -2,7 +2,7 @@ import { useState } from 'react'
 import DeleteBlogButton from './DeleteBlogButton'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, user, handleLikeClick, handleDeleteClick }) => {
+const Blog = ({ blog, handleLikeClick, handleDeleteClick }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => setVisible(!visible)
@@ -22,7 +22,6 @@ const Blog = ({ blog, user, handleLikeClick, handleDeleteClick }) => {
         <br />
         <DeleteBlogButton
           blog={blog}
-          user={user}
           handleDeleteClick={handleDeleteClick} />
       </div>
     )
@@ -46,11 +45,6 @@ Blog.propTypes = {
       name: PropTypes.string.isRequired
     }),
     id: PropTypes.any.isRequired
-  }).isRequired,
-  user: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
   }).isRequired,
   handleLikeClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired

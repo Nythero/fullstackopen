@@ -1,10 +1,16 @@
 import { useEffect } from 'react'
-import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
-import Logout from './components/Logout'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { getUser } from './reducers/userReducer'
+import {
+  BrowserRouter as Router,
+  Routes, Route//, Link
+} from 'react-router-dom'
+import Home from './components/Home'
+import Users from './components/Users'
+import NotificationMessage from './components/NotificationMessage'
+import Logout from './components/Logout'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -19,10 +25,16 @@ const App = () => {
 
   if(user !== null) {
     return (
-      <>
-        <Blogs />
+      <Router>
+        <h2>blogs</h2>
+        <NotificationMessage />
+        <p>{user.name} logged in</p>
         <Logout />
-      </>
+        <Routes>
+          <Route path='/users' element={<Users />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </Router>
     )
   }
   return <LoginForm />

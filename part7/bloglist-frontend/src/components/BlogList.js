@@ -11,7 +11,7 @@ const sortingBlogsFunction = (b1, b2) => {
     return 0
 }
 
-const BlogList = ({ user }) => {
+const BlogList = () => {
   const dispatch = useDispatch()
 
   const handleDeleteClick = (blog) => async () => {
@@ -29,8 +29,7 @@ const BlogList = ({ user }) => {
     blog={blog}
     key={blog.id}
     handleLikeClick={handleLikeClick(blog)}
-    handleDeleteClick={handleDeleteClick(blog)}
-    user={user}/>
+    handleDeleteClick={handleDeleteClick(blog)}/>
 
   const sortedBlogs = [...blogs].sort(sortingBlogsFunction)
   return sortedBlogs.map(blogComponent)
