@@ -9,10 +9,10 @@ import {
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import NotificationMessage from './components/NotificationMessage'
-import Logout from './components/Logout'
 import User from './components/User'
 import BlogView from './components/BlogView'
 import { removeBlog, likeBlog } from './reducers/blogsReducer'
+import Menu from './components/Menu'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -38,10 +38,9 @@ const App = () => {
   if(user !== null) {
     return (
       <>
+        <Menu />
         <h2>blogs</h2>
         <NotificationMessage />
-        <p>{user.name} logged in</p>
-        <Logout />
         <Routes>
           <Route path='/blogs/:id' element={<BlogView
             handleLikeClick={handleLikeClick}
