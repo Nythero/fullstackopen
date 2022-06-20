@@ -14,6 +14,7 @@ Router.post('/', async (request, response, next) => {
     response.status(201).json(newBlog)
   }
   catch(err) {
+    console.log(err)
     next(err)
   }
 })

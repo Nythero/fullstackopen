@@ -7,7 +7,7 @@ const DeleteBlogButton = ({ blog, handleDeleteClick }) => {
   const blogCreatorUsername = blog.user.username
   const userUsername = user.username
   if(blogCreatorUsername === userUsername)
-    return <button onClick={handleDeleteClick} >remove</button>
+    return <button onClick={handleDeleteClick(blog)} >remove</button>
   return null
 }
 

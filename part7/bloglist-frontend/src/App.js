@@ -25,15 +25,12 @@ const App = () => {
     dispatch(getUser())
   }, [])
 
-  const handleDeleteClick = (blog) => async () => {
-    const id = blog.id
+  const handleDeleteClick = (blog) => () => {
     if(!window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
       return
-    dispatch(removeBlog(id))
+    dispatch(removeBlog(blog))
   }
-  const handleLikeClick = (blog) => async () => {
-    dispatch(likeBlog(blog))
-  }
+  const handleLikeClick = (blog) => () => dispatch(likeBlog(blog))
 
   if(user !== null) {
     return (
@@ -42,9 +39,11 @@ const App = () => {
         <h2>blogs</h2>
         <NotificationMessage />
         <Routes>
-          <Route path='/blogs/:id' element={<BlogView
-            handleLikeClick={handleLikeClick}
-            handleDeleteClick={handleDeleteClick} />} />
+          <Route path='/blogs/:id' element={
+            <BlogView
+              handleLikeClick={handleLikeClick}
+              handleDeleteClick={handleDeleteClick} />
+          } />
           <Route path='/users/:id' element={<User />} />
           <Route path='/users' element={<Users />} />
           <Route path='/' element={<Blogs />} />

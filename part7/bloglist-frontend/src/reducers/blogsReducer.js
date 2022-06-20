@@ -3,6 +3,8 @@ import blogService from '../services/blogs'
 import populateBlog from '../utils/populateBlog'
 import { setNotification } from '../reducers/notificationReducer'
 import handleError from '../utils/handleError'
+import commentService from '../services/comments'
+
 const initialState = []
 
 const blogsSlice = createSlice({
@@ -55,14 +57,15 @@ export const addBlog = (blog) => {
   }
 }
 
-export const removeBlog = (id) => {
+export const removeBlog = (blog) => {
   return async dispatch => {
+    const id = blog.id
     try {
       await blogService.remove(id)
       dispatch(remove(id))
       const notification = {
         type:'notificationSuccess',
-        message: 'deleted blog successfully'
+        message: `deleted blog ${blog.title}`
       }
       dispatch(setNotification(notification, 5))
     }
@@ -88,6 +91,24 @@ export const likeBlog = (blog) => {
     catch(err) {
       handleError(err, 'Couldn\'t add your like. Try again later', dispatch)
     }
+  }
+}
+
+export const commentBlog = (blog, comment) => {
+  return async dispatch => {
+    try {
+      const id = blog.id
+      const newBlog = await commentService.post(comment, id)
+      const populatedBlog = await populateBlog(newBlog)
+      dispatch(reeplace(populatedBlog))
+      const notification = {
+        type:'notificationSuccess',
+        message:`added comment ${comment}`
+      }
+      dispatch(setNotification(notification, 5))
+    }
+    catch(err) {
+      handleError(err, 'Couldn\'t add your comment. Try again later', dispatch)    }
   }
 }
 
