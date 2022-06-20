@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const isSameUser = (u1) => (u2) => u1.id === u2.id
 
@@ -9,7 +10,11 @@ const includes = (list, elem, equalityFunction) => {
 const usersRowMap = (user) => {
   return (
     <tr key={user.id}>
-      <td>{user.name}</td>
+      <td>
+        <Link to={`/users/${user.id}`}>
+          {user.name}
+        </Link>
+      </td>
       <td>{user.blogs}</td>
     </tr>
   )
